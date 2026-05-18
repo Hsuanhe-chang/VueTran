@@ -1,0 +1,70 @@
+/* ===================================================
+   CSS 自訂屬性（Design Tokens）
+   統一管理顏色、間距、字型，所有元件都從這裡取值
+   =================================================== */
+
+:root {
+  /* --- 主題色 --- */
+  --color-primary: #42b883;        /* Vue 官方綠 */
+  --color-primary-dark: #33a06f;
+  --color-secondary: #35495e;      /* Vue 官方深藍 */
+  --color-accent: #f59e0b;         /* 強調橘黃 */
+
+  /* --- 背景色 --- */
+  --color-bg: #f8fafc;
+  --color-bg-card: #ffffff;
+  --color-bg-code: #1e2a35;        /* 程式碼區塊深色底 */
+
+  /* --- 文字色 --- */
+  --color-text: #1a2332;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #ffffff;
+
+  /* --- 難度標籤色 --- */
+  --color-difficulty-1: #22c55e;   /* ⭐ 基礎 - 綠 */
+  --color-difficulty-2: #f59e0b;   /* ⭐⭐ 中級 - 橘 */
+  --color-difficulty-3: #ef4444;   /* ⭐⭐⭐ 進階 - 紅 */
+
+  /* --- 題型標籤色 --- */
+  --color-type-fill: #6366f1;      /* 填空 - 紫 */
+  --color-type-write: #0ea5e9;     /* 從零撰寫 - 藍 */
+  --color-type-debug: #f97316;     /* 找錯誤 - 橘 */
+  --color-type-refactor: #8b5cf6;  /* 重構 - 深紫 */
+  --color-type-feature: #10b981;   /* 功能實作 - 青綠 */
+
+  /* --- 邊框 --- */
+  --color-border: #e2e8f0;
+  --color-border-focus: var(--color-primary);
+
+  /* --- 間距系統（4px 基底） --- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+
+  /* --- 圓角 --- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* --- 陰影 --- */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  /* --- 字型 --- */
+  --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+
+  /* --- 動畫 --- */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}

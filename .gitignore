@@ -1,0 +1,15 @@
+# 編譯產出
+/dist
+/dist-ssr
+
+# 本機環境變數（含敏感資訊，不提交）
+.env.local
+.env.*.local
+
+# 套件目錄（由 npm install 重新產生）
+node_modules/
+
+# 編輯器與系統暫存
+.DS_Store
+*.local
+.vscode/extensions.json

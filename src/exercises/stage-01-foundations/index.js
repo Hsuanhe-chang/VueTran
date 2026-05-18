@@ -1,0 +1,146 @@
+/**
+ * Stage 1 — Vue 3 Composition API 基礎
+ * 對應官方文件：https://vuejs.org/guide/essentials/reactivity-fundamentals
+ *
+ * 每個 exercise 物件包含：
+ *   id          - 路由中使用的題目識別碼（如 'q01'）
+ *   title       - 題目顯示標題
+ *   difficulty  - 難度 1/2/3
+ *   types       - 題型陣列（填空 / 從零撰寫 / 找錯誤 / 重構 / 功能實作）
+ *   docUrl      - 對應官方文件的完整 URL
+ *   docSection  - 官方文件章節名稱（顯示於 QuizLayout）
+ *   component   - 動態 import 函式 → Starter.vue（學生作答）
+ *   answer      - 動態 import 函式 → Answer.vue（參考答案）
+ */
+export const stage01Exercises = [
+  {
+    id: 'q01',
+    title: 'ref 與響應式基礎',
+    difficulty: 1,
+    types: ['填空', '從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/essentials/reactivity-fundamentals',
+    docSection: 'Reactivity Fundamentals — ref()',
+    component: () => import('./q01-ref-basics/Starter.vue'),
+    answer: () => import('./q01-ref-basics/Answer.vue'),
+  },
+  {
+    id: 'q02',
+    title: 'reactive 與巢狀物件響應性',
+    difficulty: 1,
+    types: ['填空', '找錯誤'],
+    docUrl: 'https://vuejs.org/guide/essentials/reactivity-fundamentals',
+    docSection: 'Reactivity Fundamentals — reactive()',
+    component: () => import('./q02-reactive/Starter.vue'),
+    answer: () => import('./q02-reactive/Answer.vue'),
+  },
+  {
+    id: 'q03',
+    title: 'Computed Properties 計算屬性',
+    difficulty: 1,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/essentials/computed',
+    docSection: 'Computed Properties',
+    component: () => import('./q03-computed/Starter.vue'),
+    answer: () => import('./q03-computed/Answer.vue'),
+  },
+  {
+    id: 'q04',
+    title: 'watch 與 watchEffect',
+    difficulty: 2,
+    types: ['找錯誤', '從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/essentials/watchers',
+    docSection: 'Watchers',
+    component: () => import('./q04-watch/Starter.vue'),
+    answer: () => import('./q04-watch/Answer.vue'),
+  },
+  {
+    id: 'q05',
+    title: 'Template 語法：插值與指令',
+    difficulty: 1,
+    types: ['填空'],
+    docUrl: 'https://vuejs.org/guide/essentials/template-syntax',
+    docSection: 'Template Syntax',
+    component: () => import('./q05-template-syntax/Starter.vue'),
+    answer: () => import('./q05-template-syntax/Answer.vue'),
+  },
+  {
+    id: 'q06',
+    title: 'Class 與 Style 動態綁定',
+    difficulty: 1,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/essentials/class-and-style',
+    docSection: 'Class and Style Bindings',
+    component: () => import('./q06-class-style/Starter.vue'),
+    answer: () => import('./q06-class-style/Answer.vue'),
+  },
+  {
+    id: 'q07',
+    title: 'v-if / v-show 條件渲染',
+    difficulty: 1,
+    types: ['找錯誤'],
+    docUrl: 'https://vuejs.org/guide/essentials/conditional',
+    docSection: 'Conditional Rendering',
+    component: () => import('./q07-conditional/Starter.vue'),
+    answer: () => import('./q07-conditional/Answer.vue'),
+  },
+  {
+    id: 'q08',
+    title: 'v-for 列表渲染（含 key）',
+    difficulty: 1,
+    types: ['填空', '找錯誤'],
+    docUrl: 'https://vuejs.org/guide/essentials/list',
+    docSection: 'List Rendering',
+    component: () => import('./q08-list-rendering/Starter.vue'),
+    answer: () => import('./q08-list-rendering/Answer.vue'),
+  },
+  {
+    id: 'q09',
+    title: '事件處理與修飾符',
+    difficulty: 1,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/essentials/event-handling',
+    docSection: 'Event Handling',
+    component: () => import('./q09-events/Starter.vue'),
+    answer: () => import('./q09-events/Answer.vue'),
+  },
+  {
+    id: 'q10',
+    title: 'v-model 表單雙向綁定',
+    difficulty: 1,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/essentials/forms',
+    docSection: 'Form Input Bindings',
+    component: () => import('./q10-v-model/Starter.vue'),
+    answer: () => import('./q10-v-model/Answer.vue'),
+  },
+  {
+    id: 'q11',
+    title: 'Lifecycle Hooks 生命週期鉤子',
+    difficulty: 2,
+    types: ['填空'],
+    docUrl: 'https://vuejs.org/guide/essentials/lifecycle',
+    docSection: 'Lifecycle Hooks',
+    component: () => import('./q11-lifecycle/Starter.vue'),
+    answer: () => import('./q11-lifecycle/Answer.vue'),
+  },
+  {
+    id: 'q12',
+    title: 'Template Refs（useTemplateRef）',
+    difficulty: 2,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/essentials/template-refs',
+    docSection: 'Template Refs',
+    component: () => import('./q12-template-refs/Starter.vue'),
+    answer: () => import('./q12-template-refs/Answer.vue'),
+  },
+  {
+    id: 'q99',
+    title: '綜合題：Todo List 完整實作',
+    difficulty: 3,
+    types: ['功能實作'],
+    docUrl: 'https://vuejs.org/guide/essentials/reactivity-fundamentals',
+    docSection: 'Stage 1 綜合 — Reactivity + v-for + v-model + Events',
+    component: () => import('./q99-capstone-todo/Starter.vue'),
+    answer: () => import('./q99-capstone-todo/Answer.vue'),
+  },
+]

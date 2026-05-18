@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Context7__resolve-library-id",
+      "mcp__claude_ai_Context7__query-docs",
+      "Bash(npm --version)",
+      "PowerShell(npm *)",
+      "Bash(npm run *)",
+      "PowerShell(npm run *)",
+      "PowerShell(Get-ChildItem \"D:\\\\Vue_Practice\\\\VueTranByClaude\\\\src\\\\exercises\\\\stage-03-composables\" | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem \"D:\\\\Vue_Practice\\\\VueTranByClaude\\\\src\\\\exercises\\\\stage-03-composables\\\\q04-composable-lifecycle\" | ForEach-Object { $_.Name })",
+      "PowerShell(Get-ChildItem \"D:\\\\Vue_Practice\\\\VueTranByClaude\\\\src\\\\exercises\\\\stage-05-pinia\" -Recurse | Where-Object { !$_.PSIsContainer } | ForEach-Object { $_.FullName.Replace\\(\"D:\\\\Vue_Practice\\\\VueTranByClaude\\\\src\\\\exercises\\\\stage-05-pinia\\\\\", \"\"\\) })",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\Vue_Practice\\\\VueTranByClaude\\\\src\\\\exercises\\\\stage-06-advanced\" -Recurse | ForEach-Object { $_.FullName })",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\Vue_Practice\\\\VueTranByClaude\\\\src\\\\exercises\\\\stage-07-realworld\" -Recurse | ForEach-Object { $_.FullName })"
+    ]
+  }
+}
