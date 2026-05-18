@@ -18,17 +18,17 @@ const count = ref(0)
 // TODO 1: 實作 increment — 讓 count 加 1
 //         提示：count.value = ?
 function increment(): void {
-  // 請在此填入：count.value++
+  count.value++
 }
 
 // TODO 2: 實作 decrement — 讓 count 減 1
 function decrement(): void {
-  // 請在此填入：count.value--
+  count.value--
 }
 
 // TODO 3: 實作 reset — 將 count 設回 0
 function reset(): void {
-  // 請在此填入：count.value = 0
+  count.value = 0
 }
 </script>
 
