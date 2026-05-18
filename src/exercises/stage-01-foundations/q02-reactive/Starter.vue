@@ -17,14 +17,14 @@ const user = reactive({
 // TODO 1: 實作 birthday() — 讓 user.age 加 1
 //         提示：user.age++  （reactive 屬性不需要 .value）
 function birthday() {
-  user.age++
+  // 請在此填入：user.age++
 }
 
 // TODO 2: 實作 resetUser() — 重置所有欄位回初始值
 //         ⚠️ 注意：不能直接寫 user = { ... }，那會失去響應性！
 //         正確做法：Object.assign(user, { name: ..., age: ..., email: ... })
 function resetUser() {
-  Object.assign(user, { name: 'Vue 學習者', age: 25, email: 'learner@vue.dev' })
+  // 請在此填入：Object.assign(user, { name: 'Vue 學習者', age: 25, email: 'learner@vue.dev' })
 }
 
 // ─── Part B：找錯誤區 ────────────────────────────────────
