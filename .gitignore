@@ -427,3 +427,20 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# === 專案補充 ===
+
+# Vue.js build output
+dist/
+dist-ssr/
+
+# Local env files
+.env.local
+.env.*.local
+
+# ASP.NET Core sensitive config
+appsettings.Development.json
+appsettings.Production.json
+
+# Docker local overrides
+docker-compose.override.yml
