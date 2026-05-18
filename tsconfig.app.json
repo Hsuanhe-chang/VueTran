@@ -1,0 +1,52 @@
+{
+  // 繼承 @vue/tsconfig 的 Vue 3 最佳實踐設定，並針對本專案做調整
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+
+  "compilerOptions": {
+    // 編譯目標：ES2022（支援現代語法如 class fields）
+    "target": "ES2022",
+
+    // 使用 bundler 模式解析模組（適用 Vite）
+    "moduleResolution": "bundler",
+
+    // 讓 TypeScript 支援 .vue 檔案的 JSX 轉換（由 @vitejs/plugin-vue 處理）
+    "jsx": "preserve",
+
+    // 嚴格模式：開啟所有嚴格型別檢查（推薦！練習 TS 的最佳選擇）
+    "strict": true,
+
+    // 不允許隱式的 any（在嚴格模式中已包含，此處明確標示）
+    "noImplicitAny": true,
+
+    // 路徑別名：對應 vite.config.ts 的 @ alias → src/
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    // 輸出目錄（由 vue-tsc 型別檢查用，Vite 實際打包不使用此設定）
+    "outDir": "./dist",
+
+    // 保留 source map 以利 debug
+    "sourceMap": true,
+
+    // 允許 .json 檔案的 import
+    "resolveJsonModule": true,
+
+    // 確保每個檔案都被視為獨立模組（避免全域命名污染）
+    "isolatedModules": true
+  },
+
+  // 僅編譯 src/ 目錄與環境宣告檔案
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue"
+  ],
+
+  // 排除 node_modules 與打包輸出
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

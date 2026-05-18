@@ -1,0 +1,10 @@
+{
+  // TypeScript 專案根設定：串接 tsconfig.app.json（應用程式碼）
+  "files": [],
+  "references": [
+    {
+      // 指向應用程式碼的 TS 設定（src/ 目錄）
+      "path": "./tsconfig.app.json"
+    }
+  ]
+}

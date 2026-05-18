@@ -1,0 +1,88 @@
+/**
+ * Stage 6 — 進階元件技術與效能（TypeScript 版）
+ * 對應官方文件：https://vuejs.org/guide/built-ins/keep-alive
+ */
+import type { ExerciseMeta } from '../types'
+
+export const stage06Exercises: ExerciseMeta[] = [
+  {
+    id: 'q01',
+    title: 'KeepAlive 快取元件狀態',
+    difficulty: 2,
+    types: ['填空', '找錯誤'],
+    docUrl: 'https://vuejs.org/guide/built-ins/keep-alive',
+    docSection: 'KeepAlive',
+    component: () => import('./q01-keep-alive/Starter.vue'),
+    answer: () => import('./q01-keep-alive/Answer.vue'),
+  },
+  {
+    id: 'q02',
+    title: 'Transition 進入/離開動畫',
+    difficulty: 2,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/built-ins/transition',
+    docSection: 'Transition',
+    component: () => import('./q02-transition/Starter.vue'),
+    answer: () => import('./q02-transition/Answer.vue'),
+  },
+  {
+    id: 'q03',
+    title: 'TransitionGroup 列表動畫',
+    difficulty: 2,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/built-ins/transition-group',
+    docSection: 'TransitionGroup',
+    component: () => import('./q03-transition-group/Starter.vue'),
+    answer: () => import('./q03-transition-group/Answer.vue'),
+  },
+  {
+    id: 'q04',
+    title: 'Teleport 傳送門',
+    difficulty: 2,
+    types: ['填空'],
+    docUrl: 'https://vuejs.org/guide/built-ins/teleport',
+    docSection: 'Teleport',
+    component: () => import('./q04-teleport/Starter.vue'),
+    answer: () => import('./q04-teleport/Answer.vue'),
+  },
+  {
+    id: 'q05',
+    title: 'Suspense 與非同步元件',
+    difficulty: 3,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/guide/built-ins/suspense',
+    docSection: 'Suspense',
+    component: () => import('./q05-suspense/Starter.vue'),
+    answer: () => import('./q05-suspense/Answer.vue'),
+  },
+  {
+    id: 'q06',
+    title: 'shallowRef / shallowReactive 效能優化',
+    difficulty: 3,
+    types: ['找錯誤', '重構'],
+    docUrl: 'https://vuejs.org/api/reactivity-advanced',
+    docSection: 'shallowRef() / shallowReactive()',
+    component: () => import('./q06-shallow-ref/Starter.vue'),
+    answer: () => import('./q06-shallow-ref/Answer.vue'),
+  },
+  {
+    id: 'q07',
+    title: 'markRaw / readonly / toRaw',
+    difficulty: 3,
+    types: ['填空'],
+    docUrl: 'https://vuejs.org/api/reactivity-advanced',
+    docSection: 'markRaw() / readonly() / toRaw()',
+    component: () => import('./q07-mark-raw/Starter.vue'),
+    answer: () => import('./q07-mark-raw/Answer.vue'),
+  },
+  {
+    id: 'q99',
+    title: '綜合題：帶動畫的頁面轉場與彈窗系統',
+    difficulty: 3,
+    types: ['功能實作'],
+    docUrl: 'https://vuejs.org/guide/built-ins/transition',
+    docSection: 'Stage 6 綜合 — Transition + Teleport + KeepAlive',
+    component: () => import('./q99-capstone/Starter.vue'),
+    answer: () => import('./q99-capstone/Answer.vue'),
+  },
+]

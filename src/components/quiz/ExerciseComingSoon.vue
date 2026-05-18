@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 /** 尚未開放的考題佔位元件：在動態 import 失敗時顯示 */
-defineProps({
-  // 哪一個 stage 的題目尚未完成
-  stageId: { type: String, default: '' },
-})
+defineProps<{
+  // 哪一個 stage 的題目尚未完成（可選）
+  stageId?: string
+}>()
 </script>
 
 <template>

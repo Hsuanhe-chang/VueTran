@@ -1,35 +1,37 @@
-<script setup>
+<script setup lang="ts">
 // 考題外框元件：顯示題目 metadata 並提供「顯示答案」切換
 import { ref } from 'vue'
 import DifficultyBadge from './DifficultyBadge.vue'
 import QuizNav from './QuizNav.vue'
+import type { ExerciseMeta, ExerciseType, Difficulty } from '@/exercises/types'
 
-const props = defineProps({
+// 使用 TypeScript 泛型語法定義 props，提供精確型別
+const props = defineProps<{
   // 題目編號，如 'Q01'
-  questionId: { type: String, required: true },
+  questionId: string
   // 題目標題
-  title: { type: String, required: true },
-  // 難度：1/2/3
-  difficulty: { type: Number, required: true },
-  // 題型陣列，如 ['填空', '從零撰寫']
-  types: { type: Array, required: true },
+  title: string
+  // 難度：1/2/3（使用 Difficulty 型別確保只傳合法值）
+  difficulty: Difficulty
+  // 題型陣列，如 ['填空', '從零撰寫']（使用 ExerciseType 聯合型別）
+  types: ExerciseType[]
   // 對應的官方文件 URL
-  docUrl: { type: String, required: true },
+  docUrl: string
   // 對應的官方文件章節名稱
-  docSection: { type: String, required: true },
+  docSection: string
   // 當前 stage ID
-  stageId: { type: String, required: true },
-  // 前一題 metadata（QuizNav 使用）
-  prev: { type: Object, default: null },
-  // 後一題 metadata（QuizNav 使用）
-  next: { type: Object, default: null },
-})
+  stageId: string
+  // 前一題 metadata（QuizNav 使用），無前題時為 null
+  prev: ExerciseMeta | null
+  // 後一題 metadata（QuizNav 使用），無後題時為 null
+  next: ExerciseMeta | null
+}>()
 
 // 控制是否顯示參考答案
-const showAnswer = ref(false)
+const showAnswer = ref<boolean>(false)
 
-// 題型標籤的 CSS class 對應表
-const typeColorMap = {
+// 題型標籤的 CSS class 對應表（Record 明確限制 key 型別）
+const typeColorMap: Record<ExerciseType, string> = {
   填空: 'type-fill',
   從零撰寫: 'type-write',
   找錯誤: 'type-debug',

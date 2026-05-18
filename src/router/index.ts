@@ -1,4 +1,4 @@
-// 路由設定：定義所有頁面路由，並套用懶載入以優化初始載入速度
+// 路由設定（TypeScript 版）：定義所有頁面路由，並套用懶載入以優化初始載入速度
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({

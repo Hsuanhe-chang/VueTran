@@ -1,0 +1,88 @@
+/**
+ * Stage 7 — 大型專案實戰（TypeScript 版）
+ * 對應官方文件：https://vuejs.org/guide/best-practices/production-deployment
+ */
+import type { ExerciseMeta } from '../types'
+
+export const stage07Exercises: ExerciseMeta[] = [
+  {
+    id: 'q01',
+    title: 'API 整合模式（axios + useFetch Composable）',
+    difficulty: 2,
+    types: ['功能實作'],
+    docUrl: 'https://vuejs.org/guide/scaling-up/tooling',
+    docSection: 'HTTP Client Integration',
+    component: () => import('./q01-api-integration/Starter.vue'),
+    answer: () => import('./q01-api-integration/Answer.vue'),
+  },
+  {
+    id: 'q02',
+    title: '全域錯誤處理（app.config.errorHandler）',
+    difficulty: 2,
+    types: ['從零撰寫'],
+    docUrl: 'https://vuejs.org/api/application',
+    docSection: 'app.config.errorHandler',
+    component: () => import('./q02-error-handling/Starter.vue'),
+    answer: () => import('./q02-error-handling/Answer.vue'),
+  },
+  {
+    id: 'q03',
+    title: '表單驗證（VeeValidate + Yup）',
+    difficulty: 2,
+    types: ['功能實作'],
+    docUrl: 'https://vee-validate.logaretm.com/v4/',
+    docSection: 'VeeValidate v4',
+    component: () => import('./q03-form-validation/Starter.vue'),
+    answer: () => import('./q03-form-validation/Answer.vue'),
+  },
+  {
+    id: 'q04',
+    title: 'TypeScript 與 Vue 3 整合',
+    difficulty: 3,
+    types: ['重構'],
+    docUrl: 'https://vuejs.org/guide/typescript/overview',
+    docSection: 'TypeScript with Composition API',
+    component: () => import('./q04-typescript/Starter.vue'),
+    answer: () => import('./q04-typescript/Answer.vue'),
+  },
+  {
+    id: 'q05',
+    title: '環境變數管理（import.meta.env）',
+    difficulty: 1,
+    types: ['填空'],
+    docUrl: 'https://vite.dev/guide/env-and-mode',
+    docSection: 'Vite — Env Variables & Modes',
+    component: () => import('./q05-env-vars/Starter.vue'),
+    answer: () => import('./q05-env-vars/Answer.vue'),
+  },
+  {
+    id: 'q06',
+    title: 'Vite 建置優化（Code Splitting / 手動 chunk）',
+    difficulty: 3,
+    types: ['重構'],
+    docUrl: 'https://vite.dev/guide/build',
+    docSection: 'Vite — Building for Production',
+    component: () => import('./q06-vite-build/Starter.vue'),
+    answer: () => import('./q06-vite-build/Answer.vue'),
+  },
+  {
+    id: 'q07',
+    title: 'Vitest 單元測試基礎',
+    difficulty: 2,
+    types: ['從零撰寫'],
+    docUrl: 'https://vitest.dev/guide/',
+    docSection: 'Vitest — Getting Started',
+    component: () => import('./q07-vitest/Starter.vue'),
+    answer: () => import('./q07-vitest/Answer.vue'),
+  },
+  {
+    id: 'q99',
+    title: '綜合題：小型後台管理系統',
+    difficulty: 3,
+    types: ['功能實作'],
+    docUrl: 'https://vuejs.org/guide/best-practices/production-deployment',
+    docSection: 'Stage 7 綜合 — 後台管理系統',
+    component: () => import('./q99-capstone-admin/Starter.vue'),
+    answer: () => import('./q99-capstone-admin/Answer.vue'),
+  },
+]

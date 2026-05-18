@@ -1,20 +1,21 @@
-<script setup>
+<script setup lang="ts">
 /**
- * 考題作答頁：動態載入對應 Stage + Question 的 Starter.vue 與 Answer.vue
- * 透過路由參數（stageId, questionId）查詢 stages.js 中的 metadata，
+ * 考題作答頁（TypeScript 版）：動態載入對應 Stage + Question 的 Starter.vue 與 Answer.vue
+ * 透過路由參數（stageId, questionId）查詢 stages.ts 中的 metadata，
  * 再用 defineAsyncComponent 懶載入元件，避免一次載入所有考題造成效能問題。
  */
-import { computed, shallowRef, watch, defineAsyncComponent } from 'vue'
+import { computed, shallowRef, watch, defineAsyncComponent, type Component } from 'vue'
 import { useRoute } from 'vue-router'
-import { getExercise, getAdjacentExercises } from '@/exercises/stages.js'
+import { getExercise, getAdjacentExercises } from '@/exercises/stages'
 import QuizLayout from '@/components/quiz/QuizLayout.vue'
 import ExerciseComingSoon from '@/components/quiz/ExerciseComingSoon.vue'
 
 const route = useRoute()
 
 // ─── 根據路由參數取得當前題目的 metadata ─────────────────
-const stageId = computed(() => route.params.stageId)
-const questionId = computed(() => route.params.questionId)
+// route.params 的值可能是 string | string[]，用 as string 確保型別
+const stageId = computed(() => route.params.stageId as string)
+const questionId = computed(() => route.params.questionId as string)
 
 const exercise = computed(() => getExercise(stageId.value, questionId.value))
 
@@ -22,9 +23,10 @@ const exercise = computed(() => getExercise(stageId.value, questionId.value))
 const adjacent = computed(() => getAdjacentExercises(stageId.value, questionId.value))
 
 // ─── 動態載入 Starter 與 Answer 元件 ────────────────────
-// 使用 shallowRef 存放元件定義，避免 Vue 深層追蹤元件物件
-const StarterComponent = shallowRef(null)
-const AnswerComponent = shallowRef(null)
+// 使用 shallowRef 存放元件定義，型別為 Component | null
+// shallowRef 避免 Vue 深層追蹤元件物件（提升效能）
+const StarterComponent = shallowRef<Component | null>(null)
+const AnswerComponent = shallowRef<Component | null>(null)
 
 /**
  * 當路由中的 exercise 改變時，重新載入對應元件。
@@ -34,6 +36,7 @@ watch(
   exercise,
   (ex) => {
     if (!ex) {
+      // 題目不存在時清空元件（顯示 not-found 提示）
       StarterComponent.value = null
       AnswerComponent.value = null
       return

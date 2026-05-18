@@ -1,12 +1,10 @@
 /**
- * Stage 2 — 元件設計與元件間通訊
+ * Stage 2 — 元件設計與元件間通訊（TypeScript 版）
  * 對應官方文件：https://vuejs.org/guide/components/registration
- *
- * 注意：此 Stage 的考題檔案正在建置中。
- * 路由基礎設施已就緒，exercise metadata 如下，
- * 各 Starter.vue / Answer.vue 將在後續加入。
  */
-export const stage02Exercises = [
+import type { ExerciseMeta } from '../types'
+
+export const stage02Exercises: ExerciseMeta[] = [
   {
     id: 'q01',
     title: 'defineProps 定義與型別驗證',

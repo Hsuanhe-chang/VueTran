@@ -1,4 +1,4 @@
-// Vite 設定檔：定義 Vue 插件與路徑別名
+// Vite 設定檔（TypeScript 版）：定義 Vue 插件與路徑別名
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'

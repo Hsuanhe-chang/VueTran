@@ -1,0 +1,88 @@
+/**
+ * Stage 5 — Pinia 狀態管理（TypeScript 版）
+ * 對應官方文件：https://pinia.vuejs.org/core-concepts/
+ */
+import type { ExerciseMeta } from '../types'
+
+export const stage05Exercises: ExerciseMeta[] = [
+  {
+    id: 'q01',
+    title: 'defineStore 基礎（Options 寫法）',
+    difficulty: 1,
+    types: ['填空'],
+    docUrl: 'https://pinia.vuejs.org/core-concepts/',
+    docSection: 'Defining a Store',
+    component: () => import('./q01-define-store/Starter.vue'),
+    answer: () => import('./q01-define-store/Answer.vue'),
+  },
+  {
+    id: 'q02',
+    title: 'Setup Store（Composition API 寫法）',
+    difficulty: 2,
+    types: ['重構'],
+    docUrl: 'https://pinia.vuejs.org/core-concepts/',
+    docSection: 'Setup Stores',
+    component: () => import('./q02-setup-store/Starter.vue'),
+    answer: () => import('./q02-setup-store/Answer.vue'),
+  },
+  {
+    id: 'q03',
+    title: 'Getters 與衍生狀態',
+    difficulty: 1,
+    types: ['從零撰寫'],
+    docUrl: 'https://pinia.vuejs.org/core-concepts/getters',
+    docSection: 'Getters',
+    component: () => import('./q03-getters/Starter.vue'),
+    answer: () => import('./q03-getters/Answer.vue'),
+  },
+  {
+    id: 'q04',
+    title: 'Actions 與非同步操作',
+    difficulty: 2,
+    types: ['功能實作'],
+    docUrl: 'https://pinia.vuejs.org/core-concepts/actions',
+    docSection: 'Actions',
+    component: () => import('./q04-actions/Starter.vue'),
+    answer: () => import('./q04-actions/Answer.vue'),
+  },
+  {
+    id: 'q05',
+    title: 'storeToRefs 保持響應性',
+    difficulty: 1,
+    types: ['找錯誤'],
+    docUrl: 'https://pinia.vuejs.org/core-concepts/',
+    docSection: 'Destructuring from a Store',
+    component: () => import('./q05-store-to-refs/Starter.vue'),
+    answer: () => import('./q05-store-to-refs/Answer.vue'),
+  },
+  {
+    id: 'q06',
+    title: 'Store 之間的組合與相互呼叫',
+    difficulty: 2,
+    types: ['從零撰寫'],
+    docUrl: 'https://pinia.vuejs.org/cookbook/composing-stores',
+    docSection: 'Composing Stores',
+    component: () => import('./q06-composing-stores/Starter.vue'),
+    answer: () => import('./q06-composing-stores/Answer.vue'),
+  },
+  {
+    id: 'q07',
+    title: 'Pinia Plugin 開發',
+    difficulty: 3,
+    types: ['填空'],
+    docUrl: 'https://pinia.vuejs.org/core-concepts/plugins',
+    docSection: 'Plugins',
+    component: () => import('./q07-pinia-plugin/Starter.vue'),
+    answer: () => import('./q07-pinia-plugin/Answer.vue'),
+  },
+  {
+    id: 'q99',
+    title: '綜合題：購物車（多 Store 協作）',
+    difficulty: 3,
+    types: ['功能實作'],
+    docUrl: 'https://pinia.vuejs.org/cookbook/composing-stores',
+    docSection: 'Stage 5 綜合 — Multi-Store 購物車',
+    component: () => import('./q99-capstone-cart/Starter.vue'),
+    answer: () => import('./q99-capstone-cart/Answer.vue'),
+  },
+]

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 /**
  * Q01 — 參考答案：ref 與響應式基礎
  *
@@ -6,6 +6,7 @@
  *   1. 用 ref() 建立響應式基本型別值
  *   2. 在 <script setup> 中透過 .value 讀寫
  *   3. 在 <template> 中 Vue 自動解包，直接寫變數名即可
+ *   4. TypeScript 會自動推論 ref(0) 的型別為 Ref<number>
  */
 
 // 步驟 1：從 'vue' import ref
@@ -14,22 +15,23 @@ import { ref } from 'vue'
 
 // 步驟 2：建立初始值為 0 的響應式計數器
 //         ref() 會回傳一個 { value: 0 } 的響應式物件
+//         TypeScript 型別：Ref<number>
 //         當 count.value 改變時，Vue 會自動重新渲染使用 count 的 template
 const count = ref(0)
 
 // 步驟 3：increment — 讓計數器加 1
 //         在 script 中必須透過 .value 來修改 ref 的值
-function increment() {
+function increment(): void {
   count.value++
 }
 
 // 步驟 4：decrement — 讓計數器減 1
-function decrement() {
+function decrement(): void {
   count.value--
 }
 
 // 步驟 5：reset — 將計數器歸零
-function reset() {
+function reset(): void {
   count.value = 0
 }
 </script>

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 // 全域頂部導覽列：顯示品牌名稱與首頁連結
 import { RouterLink } from 'vue-router'
 </script>

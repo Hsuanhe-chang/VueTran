@@ -1,18 +1,10 @@
 /**
- * Stage 1 — Vue 3 Composition API 基礎
+ * Stage 1 — Vue 3 Composition API 基礎（TypeScript 版）
  * 對應官方文件：https://vuejs.org/guide/essentials/reactivity-fundamentals
- *
- * 每個 exercise 物件包含：
- *   id          - 路由中使用的題目識別碼（如 'q01'）
- *   title       - 題目顯示標題
- *   difficulty  - 難度 1/2/3
- *   types       - 題型陣列（填空 / 從零撰寫 / 找錯誤 / 重構 / 功能實作）
- *   docUrl      - 對應官方文件的完整 URL
- *   docSection  - 官方文件章節名稱（顯示於 QuizLayout）
- *   component   - 動態 import 函式 → Starter.vue（學生作答）
- *   answer      - 動態 import 函式 → Answer.vue（參考答案）
  */
-export const stage01Exercises = [
+import type { ExerciseMeta } from '../types'
+
+export const stage01Exercises: ExerciseMeta[] = [
   {
     id: 'q01',
     title: 'ref 與響應式基礎',

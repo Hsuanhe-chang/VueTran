@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 // 課程首頁：顯示所有 Stage 的總覽卡片，點擊進入該 Stage 的題目列表
 import { RouterLink } from 'vue-router'
-import { stages } from '@/exercises/stages.js'
+import { stages } from '@/exercises/stages'
 
-// 將 stages 物件轉為陣列，方便 v-for 渲染
+// 將 stages 物件轉為陣列，方便 v-for 渲染（StageMeta[] 型別由 TypeScript 自動推論）
 const stageList = Object.values(stages)
 </script>
 

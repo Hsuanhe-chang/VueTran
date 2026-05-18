@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import App from './App.vue'
-import router from './router/index.js'
+import router from './router/index'
 
 // 全域 CSS（含 Reset 與 CSS 變數）
 import './assets/styles/global.css'

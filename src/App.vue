@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 // 根元件：負責全域 Layout（Header + 主內容區）
 import AppHeader from '@/components/common/AppHeader.vue'
 </script>

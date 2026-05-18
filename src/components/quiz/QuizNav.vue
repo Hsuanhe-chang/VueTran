@@ -1,29 +1,22 @@
-<script setup>
+<script setup lang="ts">
 // 考題導航元件：提供上一題 / 下一題 / 回列表三個按鈕
 import { useRouter } from 'vue-router'
+import type { ExerciseMeta } from '@/exercises/types'
 
-const props = defineProps({
+// 使用 TypeScript 泛型語法定義 props，ExerciseMeta 提供精確型別
+const props = defineProps<{
   // 當前 stage ID（字串，對應路由參數）
-  stageId: {
-    type: String,
-    required: true,
-  },
+  stageId: string
   // 前一道題目的 metadata，null 表示已是第一題
-  prev: {
-    type: Object,
-    default: null,
-  },
+  prev: ExerciseMeta | null
   // 下一道題目的 metadata，null 表示已是最後一題
-  next: {
-    type: Object,
-    default: null,
-  },
-})
+  next: ExerciseMeta | null
+}>()
 
 const router = useRouter()
 
-// 導航到指定題目
-function goTo(exercise) {
+// 導航到指定題目（TypeScript 知道 exercise 的 id 型別為 string）
+function goTo(exercise: ExerciseMeta): void {
   router.push({
     name: 'exercise',
     params: { stageId: props.stageId, questionId: exercise.id },
@@ -31,7 +24,7 @@ function goTo(exercise) {
 }
 
 // 回到該 Stage 的題目列表頁
-function goToList() {
+function goToList(): void {
   router.push({ name: 'exercise-list', params: { stageId: props.stageId } })
 }
 </script>

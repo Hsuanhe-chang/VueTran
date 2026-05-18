@@ -1,17 +1,18 @@
-<script setup>
+<script setup lang="ts">
 // Stage 題目列表頁：顯示該 Stage 的所有考題，點擊進入作答頁
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
-import { stages } from '@/exercises/stages.js'
+import { stages } from '@/exercises/stages'
+import type { ExerciseType } from '@/exercises/types'
 import DifficultyBadge from '@/components/quiz/DifficultyBadge.vue'
 
 const route = useRoute()
 
-// 根據路由參數取得當前 Stage 資料
-const stage = computed(() => stages[route.params.stageId] ?? null)
+// 根據路由參數取得當前 Stage 資料（stageId 可能是 string | string[]，需轉換）
+const stage = computed(() => stages[route.params.stageId as string] ?? null)
 
-// 題型對應的 CSS class（與 QuizLayout 共用同一套）
-const typeColorMap = {
+// 題型對應的 CSS class（Record 限制 key 必須是合法的 ExerciseType）
+const typeColorMap: Record<ExerciseType, string> = {
   填空: 'type-fill',
   從零撰寫: 'type-write',
   找錯誤: 'type-debug',
