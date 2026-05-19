@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q02 — reactive 與巢狀物件響應性
  * Part A（填空）：完成 reactive 物件操作

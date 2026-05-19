@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — 非同步 Composable（useFetch pattern）（解答）
  *
  *  核心概念：
@@ -7,14 +7,15 @@
  *  - try/catch/finally 確保 isLoading 無論成敗都會歸回 false
  *  - 每次重新 fetch 前重置所有狀態，避免舊資料短暫殘留
  */
-import { ref, watchEffect, toValue } from 'vue'
+import { ref, watchEffect, toValue, type MaybeRefOrGetter } from 'vue'
 
 // ── useFetch composable ───────────────────────────────────────
 // 參數 url：可傳入字串、ref、或 getter 函式（MaybeRefOrGetter<string>）
-function useFetch(url) {
+function useFetch(url: MaybeRefOrGetter<string>) {
   // 三個核心狀態 ref，初始值皆為「無資料」
-  const data      = ref(null)   // 成功後存放 API 回應資料
-  const error     = ref(null)   // 失敗後存放錯誤訊息字串
+  // data 用 any 避免 template 中存取陣列元素屬性時的型別錯誤
+  const data      = ref<any>(null)            // 成功後存放 API 回應資料
+  const error     = ref<string | null>(null)  // 失敗後存放錯誤訊息字串
   const isLoading = ref(false)  // 是否正在等待回應
 
   // watchEffect 會在第一次執行、以及每次 toValue(url) 的依賴改變時重新執行
@@ -33,9 +34,9 @@ function useFetch(url) {
 
       // 解析 JSON 並寫入 data
       data.value = await res.json()
-    } catch (e) {
+    } catch (e: unknown) {
       // 網路錯誤或上方手動拋出的 HTTP 錯誤都會在這裡被捕捉
-      error.value = e.message
+      error.value = e instanceof Error ? e.message : String(e)
     } finally {
       // 無論成功或失敗，都要關閉 loading 狀態
       isLoading.value = false

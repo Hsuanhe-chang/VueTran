@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — defineModel（Component v-model）（從零撰寫）
  *  你正在實作 CustomToggle 元件（美化版 checkbox）。
  *  父層這樣使用它：

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — createRouter / createWebHistory 基礎設定（填空）
  *
  *  Vue Router 安裝流程：

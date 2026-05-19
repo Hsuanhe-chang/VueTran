@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — Getters 與衍生狀態（從零撰寫）
  *
  *  Pinia Getters 是 Store 的計算屬性：
@@ -28,25 +28,25 @@ const useProductStore = defineStore('products-q03', {
   getters: {
     // ── TODO 1：totalProducts — 商品總數 ──────────────────────────
     // 提示：state.products.length
-    totalProducts: /* TODO */ null,
+    totalProducts: /* TODO */ null as any, // as any 避免 null getter 導致 defineStore overload 錯誤
 
-    // ── TODO 2：filteredProducts — 依 category 過濾 ───────────────
+    // ── TODO 2：filteredProducts — 依 category 過濾 ─────────────────────
     // 提示：category 為 'all' 時回傳全部，否則篩選 p.category === state.category
-    filteredProducts: /* TODO */ null,
+    filteredProducts: /* TODO */ null as any,
 
     // ── TODO 3：averageRating — 所有商品評分平均 ──────────────────
     // 提示：無商品時回傳 0；用 reduce 累加後除以長度
-    averageRating: /* TODO */ null,
+    averageRating: /* TODO */ null as any,
 
-    // ── TODO 4：getById — 帶參數的 Getter（回傳函式）──────────────
+    // ── TODO 4：getById — 帶參數的 Getter（回傳函式）─────────────
     // 用法：store.getById('3') → 找到 id 為 '3' 的商品
     // 提示：return (id) => state.products.find(p => p.id === id)
-    getById: /* TODO */ null,
+    getById: /* TODO */ null as any,
   },
 
   actions: {
     // 切換分類（已完成）
-    setCategory(cat) { this.category = cat },
+    setCategory(cat: string) { this.category = cat },
   },
 })
 

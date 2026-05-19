@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — 路由 Meta 欄位與權限控制（解答）
  *
  *  核心概念：

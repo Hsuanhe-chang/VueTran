@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：帶動畫的頁面轉場與彈窗系統（解答）
  *
  *  TODO 解答：
@@ -12,7 +12,7 @@
  *  - Transition 的 mode="out-in" → 舊頁先離開，新頁再進入（避免重疊）
  *  - Teleport 讓 Modal / Toast 脫離父元件的 overflow 和 z-index 限制
  */
-import { ref, defineComponent, onMounted } from 'vue'
+import { ref, defineComponent, onMounted, type Component } from 'vue'
 
 // ── 頁面元件定義 ─────────────────────────────────────────
 // 每個元件必須有 name 選項，KeepAlive 才能用 include 比對
@@ -107,9 +107,10 @@ const tabs = [
 ]
 
 const currentTab  = ref('home')
-const currentPage = ref(HomePage)
+// 使用 Component 基礎型別，允許儲存三種頁面元件中的任意一種
+const currentPage = ref<Component>(HomePage)
 
-function switchTab(tab) {
+function switchTab(tab: typeof tabs[0]): void {
   currentTab.value  = tab.id
   currentPage.value = tab.component
 }
@@ -125,10 +126,10 @@ function confirmModal() { modalResult.value = '✅ 使用者確認了操作'; sh
 function cancelModal()  { modalResult.value = '❌ 使用者取消了操作'; showModal.value = false }
 
 // ── Toast 通知 ────────────────────────────────────────────
-const toasts = ref([])
+const toasts = ref<{ id: number; msg: string; type: string }[]>([])  // 明確標注，避免推斷為 never[]
 let toastId  = 0
 
-function addToast(msg, type = 'info') {
+function addToast(msg: string, type = 'info'): void {
   const id = ++toastId
   toasts.value.push({ id, msg, type })
   // 3 秒後自動移除

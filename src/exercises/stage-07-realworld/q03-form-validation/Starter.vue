@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — 表單驗證（原生 Vue 響應式驗證）（練習）
  *
  *  不依賴第三方驗證庫，用 Vue 響應式 API 自行實作表單驗證。
@@ -56,7 +56,8 @@ import { computed, reactive, ref } from 'vue'
 // 暫時空佔位（完成 TODO 後請刪除）
 const form    = reactive({ name: '', email: '', password: '', role: 'viewer' })
 const touched = reactive({ name: false, email: false, password: false })
-const errors  = computed(() => ({}))
+// 加上回傳型別 Record<string, string>，讓模板存取 errors.name 等屬性時不出現 TS 錯誤
+const errors  = computed((): Record<string, string> => ({}))
 const hasErrors = computed(() => false)
 
 // ── TODO 4：送出處理 ─────────────────────────────────────
@@ -77,7 +78,8 @@ function handleSubmit() {
 }
 
 // 欄位 blur 時標記為 touched
-function touch(field) {
+// keyof typeof touched 限定 field 只能是 'name' | 'email' | 'password'，避免字串索引錯誤
+function touch(field: keyof typeof touched): void {
   touched[field] = true
 }
 </script>

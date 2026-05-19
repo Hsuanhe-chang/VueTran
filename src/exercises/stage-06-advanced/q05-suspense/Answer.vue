@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — Suspense 與非同步元件（解答）
  *
  *  TODO 解答：
@@ -111,10 +111,10 @@ onErrorCaptured((err) => {
       <h4>✅ 完整 Suspense 寫法</h4>
       <pre v-pre class="code-block"><!-- TODO 1：Suspense 包住 async setup() 元件 -->
 <Suspense>
-  <template #default>
+  <template &#35;default>
     <AsyncCard :key="loadKey" />   <!-- key 改變 → 重試 -->
   </template>
-  <template #fallback>
+  <template &#35;fallback>
     <div class="skeleton">載入中…</div>
   </template>
 </Suspense>

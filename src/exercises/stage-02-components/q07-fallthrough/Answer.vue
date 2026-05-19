@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — Fallthrough Attributes（解答）
  *
  *  核心概念：

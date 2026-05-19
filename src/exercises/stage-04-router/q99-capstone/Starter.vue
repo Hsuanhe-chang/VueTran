@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：含權限控制的多頁面路由系統（練習）
  *
  *  本題整合 Stage 4 所有 Vue Router 概念：
@@ -9,13 +9,34 @@
  *  - 程式化導航（simulateNav）
  */
 import { ref, computed } from 'vue'
+// ── 路由 meta 的形狀（requiresAuth/roles 為可選，允許 login-page 等特殊路由） ──────
+interface RouteMeta {
+  title: string             // 頁面標題（必填）
+  requiresAuth?: boolean    // 是否需要登入（選填）
+  roles?: string[] | null   // 允許的角色清單（選填）
+  breadcrumb?: string[]     // 麵包屑路徑陣列（選填）
+}
 
+// ── Mock 路由項目的形狀 ──────────────────────────────────────────────
+interface MockRoute {
+  name: string   // 路由名稱
+  meta: RouteMeta
+}
+
+// ── 導航守衛回傳值的型別 ───────────────────────────────────────────
+type AuthResult = 'allowed' | 'denied' | 'login'
+
+// ── 被守衛攔截後暫存的目標路由 ─────────────────────────────────────
+interface PendingRoute {
+  name: string          // 路由名稱
+  postId: string | null // 文章 ID（對應動態 params）
+}
 // ── Mock Auth 狀態 ────────────────────────────────────────────
 const isLoggedIn = ref(false)
 const userRole   = ref('guest')  // 'guest' / 'user' / 'admin'
 
 // ── Mock 路由設定 ─────────────────────────────────────────────
-const mockRoutes = [
+const mockRoutes: MockRoute[] = [  // 明確標註型別，避免 TS 推斷過鬼
   { name: 'home',    meta: { title: '首頁',       requiresAuth: false, roles: null,              breadcrumb: ['首頁'] } },
   { name: 'posts',   meta: { title: '文章列表',   requiresAuth: true,  roles: ['user','admin'],   breadcrumb: ['首頁', '文章'] } },
   { name: 'post',    meta: { title: '文章詳情',   requiresAuth: true,  roles: ['user','admin'],   breadcrumb: ['首頁', '文章', '詳情'] } },
@@ -32,21 +53,21 @@ const posts = [
 ]
 
 // ── 當前路由狀態 ──────────────────────────────────────────────
-const currentRoute = ref(mockRoutes[0])  // 當前頁面
-const currentPostId = ref(null)          // 文章詳情的 :id
-const searchQuery   = ref('')            // Posts 搜尋 query
-const pendingRoute  = ref(null)          // 被守衛攔截前想去的路由（用於 login 後 redirect）
-const accessResult  = ref(null)          // 最近一次守衛結果：null / 'allowed' / 'denied' / 'login'
+const currentRoute = ref<MockRoute>(mockRoutes[0])  // 明確型別，允許後續賴入特殊路由（e.g. login-page）
+const currentPostId = ref<string | null>(null)      // 文章詳情的 :id（null = 未選中）
+const searchQuery   = ref('')                       // Posts 搜尋 query
+const pendingRoute  = ref<PendingRoute | null>(null) // 被守衛攔截前想去的路由（用於 login 後 redirect）
+const accessResult  = ref<AuthResult | null>(null)  // 最近一次守衛結果：null / 'allowed' / 'denied' / 'login'
 
 // ── TODO：實作 checkAuth 導航守衛 ────────────────────────────
 // 回傳：'allowed' / 'denied' / 'login'（需要重定向到登入）
-function checkAuth(target) {
+function checkAuth(target: MockRoute): AuthResult {
   // TODO：參考 Q04 的邏輯實作
   return 'allowed'  // ← 替換這行
 }
 
 // ── simulateNav：模擬路由切換（含守衛） ──────────────────────
-function simulateNav(routeName, postId = null) {
+function simulateNav(routeName: string, postId: string | null = null): void {
   const target = mockRoutes.find(r => r.name === routeName)
   if (!target) return
 
@@ -65,17 +86,17 @@ function simulateNav(routeName, postId = null) {
 }
 
 // ── 登入操作 ──────────────────────────────────────────────────
-function login(role) {
+function login(role: string): void {
   isLoggedIn.value = true
   userRole.value   = role
   // TODO：登入後若有 pendingRoute，自動導向（實作 redirect 邏輯）
-  currentRoute.value = mockRoutes.find(r => r.name === 'home')
+  currentRoute.value = mockRoutes.find(r => r.name === 'home')!  // home 必存於 mockRoutes
 }
 
-function logout() {
+function logout(): void {
   isLoggedIn.value = false
   userRole.value   = 'guest'
-  currentRoute.value = mockRoutes.find(r => r.name === 'home')
+  currentRoute.value = mockRoutes.find(r => r.name === 'home')!  // home 必存於 mockRoutes
 }
 
 // ── Posts 搜尋過濾 ────────────────────────────────────────────

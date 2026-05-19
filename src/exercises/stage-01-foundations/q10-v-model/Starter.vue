@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q10 — v-model 表單雙向綁定（從零撰寫）
  *  現況：響應式資料已宣告，你需要在 template 中加上 v-model 綁定
  */

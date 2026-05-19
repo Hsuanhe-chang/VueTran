@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — v-if / v-show 條件渲染（找錯誤題） */
 import { ref } from 'vue'
 

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q08 — 路由查詢字串（Query Parameters）（解答）
  *
  *  核心概念：
@@ -35,16 +35,16 @@ const category    = computed(() => (route.query.category ?? 'all').toString())
 const sortBy      = computed(() => (route.query.sort ?? 'default').toString())
 
 // 用 router.replace 更新 query — replace 不增加歷史紀錄（避免篩選操作堆積瀏覽器歷史）
-function setSearch(val) {
+function setSearch(val: string): void {
   router.replace({ query: { ...route.query, q: val || undefined } })
   // q: undefined 會移除該 key（不顯示在 URL 中）
 }
 
-function setCategory(val) {
+function setCategory(val: string): void {
   router.replace({ query: { ...route.query, category: val === 'all' ? undefined : val } })
 }
 
-function setSort(val) {
+function setSort(val: string): void {
   router.replace({ query: { ...route.query, sort: val === 'default' ? undefined : val } })
 }
 
@@ -84,7 +84,7 @@ const filteredProducts = computed(() => {
     <section class="demo-section">
       <h4>商品搜尋（操作後觀察 URL 變化）</h4>
 
-      <input :value="searchQuery" @input="setSearch($event.target.value)"
+      <input :value="searchQuery" @input="setSearch(($event.target as HTMLInputElement).value)"
         type="text" class="search-input" placeholder="搜尋商品名稱…" />
 
       <div class="category-tabs">
@@ -97,7 +97,7 @@ const filteredProducts = computed(() => {
 
       <div class="sort-row">
         <label>排序：</label>
-        <select :value="sortBy" @change="setSort($event.target.value)" class="sort-select">
+        <select :value="sortBy" @change="setSort(($event.target as HTMLSelectElement).value)" class="sort-select">
           <option v-for="opt in sortOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
         </select>
       </div>

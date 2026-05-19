@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — Getters 與衍生狀態（解答）
  *
  *  重點：
@@ -42,11 +42,11 @@ const useProductStore = defineStore('products-q03-ans', {
 
     // ④ 帶參數的 getter：回傳一個函式
     //    注意：這樣的 getter 無法被快取（每次都重新執行內層函式）
-    getById: (state) => (id) => state.products.find(p => p.id === id),
+    getById: (state) => (id: string) => state.products.find(p => p.id === id),
   },
 
   actions: {
-    setCategory(cat) { this.category = cat },
+    setCategory(cat: string) { this.category = cat },
   },
 })
 

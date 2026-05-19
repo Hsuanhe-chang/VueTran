@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — 巢狀路由（Nested Routes）（解答）
  *
  *  核心概念：

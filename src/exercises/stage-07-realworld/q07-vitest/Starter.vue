@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — Vitest 單元測試基礎（練習）
  *
  *  以下三個工具函式各含一個 Bug，導致部分測試失敗。
@@ -11,21 +11,35 @@
  */
 import { ref, computed } from 'vue'
 
+// ── 測試結果的資料結構定義 ──────────────────────────────────
+/** 單個測試案例的執行結果 */
+interface TestResult {
+  name: string
+  actual: unknown
+  expected: unknown
+  pass: boolean
+}
+/** 測試套件的執行結果 */
+interface SuiteResult {
+  describe: string
+  tests: TestResult[]
+}
+
 // ── 受測函式（Subject Under Test）────────────────────────
 // 以下三個函式各含一個 Bug，請找出並修正
 
 /**
  * 金額格式化
- * @param {*}      price    - 金額（應為 number）
+ * @param {unknown} price    - 金額（應為 number）
  * @param {string} currency - 貨幣代碼（預設 USD）
  * @returns {string}
  *
  * TODO 1：此函式有一個 Bug 導致非數字輸入無法正確處理
  * 提示：格式化前應先驗證 price 的型別
  */
-function formatPrice(price, currency = 'USD') {
+function formatPrice(price: unknown, currency = 'USD'): string {
   // BUG：缺少型別檢查，非數字仍會被格式化成 '$NaN' 而非回傳 'Invalid'
-  return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(price)
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(price as number)
 }
 
 /**
@@ -36,7 +50,7 @@ function formatPrice(price, currency = 'USD') {
  * TODO 2：此函式有一個 Bug 導致不合法的 Email 被視為有效
  * 提示：注意正則表達式中 * 與 + 量詞的差異
  */
-function validateEmail(email) {
+function validateEmail(email: string): boolean {
   // BUG：@ 前使用 * 允許零個字元，導致 '@example.com' 通過驗證（應改為 +）
   return /^[^\s@]*@[^\s@]+\.[^\s@]+$/.test(email)
 }
@@ -51,7 +65,7 @@ function validateEmail(email) {
  * TODO 3：此函式有一個 Bug 導致多個測試結果錯誤
  * 提示：Math.min 與 Math.max 的嵌套順序非常重要
  */
-function clamp(value, min, max) {
+function clamp(value: number, min: number, max: number): number {
   // BUG：Math.max 與 Math.min 位置互換，結果完全相反
   return Math.max(Math.min(value, min), max)
 }
@@ -61,7 +75,8 @@ function clamp(value, min, max) {
 // expected 值均為正確答案，若函式有 Bug 則 actual 與 expected 不符合
 
 /** 深層相等比較（模擬 expect().toEqual()）*/
-function deepEqual(a, b) {
+// a, b: unknown 接受任意型別，避免隐式 any 參數錯誤
+function deepEqual(a: unknown, b: unknown): boolean {
   return JSON.stringify(a) === JSON.stringify(b)
 }
 
@@ -97,7 +112,8 @@ const testSuites = [
 ]
 
 // ── 測試執行器狀態 ────────────────────────────────────────
-const results = ref([])
+// 加上 SuiteResult[] 泛型，避免 ref([]) 的隱式 any 型別錯誤
+const results = ref<SuiteResult[]>([])
 const hasRun = ref(false)
 
 /** 執行所有測試並更新 results */
@@ -109,9 +125,10 @@ function runTests() {
       try {
         actual = t.fn()
         pass = deepEqual(actual, t.expected)
-      } catch (e) {
+      } catch (e: unknown) {
         // 若函式本身拋錯，標記為失敗並顯示錯誤訊息
-        actual = `Error: ${e.message}`
+        // e: unknown 是 TypeScript 嚴格模式預設，用 instanceof 安全取得 message
+        actual = `Error: ${e instanceof Error ? e.message : String(e)}`
         pass = false
       }
       return { name: t.name, actual, expected: t.expected, pass }

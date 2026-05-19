@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — 表單驗證（原生 Vue 響應式驗證）（解答）
  *
  *  TODO 解答：
@@ -29,7 +29,8 @@ const touched = reactive({
 
 // ✅ TODO 3：計算錯誤訊息
 const errors = computed(() => {
-  const e = {}
+  // Record<string, string> 明確宣告 e 可接受任意字串 key，避免 TypeScript 索引錯誤
+  const e: Record<string, string> = {}
 
   // 姓名：必填且至少 2 字
   if (touched.name) {
@@ -67,7 +68,8 @@ const submitResult = ref('')
 
 function handleSubmit() {
   // 步驟 1：強制 touch 所有欄位（讓未碰過的空白欄位也顯示錯誤）
-  Object.keys(touched).forEach(k => (touched[k] = true))
+  // keyof typeof touched 確保 k 對應 touched 的已知 key，避免字串索引錯誤
+  Object.keys(touched).forEach(k => (touched[k as keyof typeof touched] = true))
 
   // 步驟 2：有驗證錯誤 → 停止，不送出
   if (hasErrors.value) return
@@ -77,7 +79,8 @@ function handleSubmit() {
 }
 
 // 欄位 blur 時標記為 touched（觸發驗證顯示）
-function touch(field) {
+// keyof typeof touched 限定 field 必須是 touched 的已知鍵名（'name' | 'email' | 'password'）
+function touch(field: keyof typeof touched): void {
   touched[field] = true
 }
 </script>

@@ -1,19 +1,19 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q11 — Lifecycle Hooks（填空題）
  *  現況：基礎架構已完成，你需要在正確的生命週期鉤子中加入邏輯
  */
 import { ref, onMounted, onBeforeUnmount, onUpdated } from 'vue'
 
 const isLoading = ref(true)
-const data = ref(null)
+const data = ref<{ title: string; count: number } | null>(null)
 const updateCount = ref(0)
-const lifecycleLog = ref([])
+const lifecycleLog = ref<string[]>([])
 
-function addLog(msg) {
+function addLog(msg: string): void {
   lifecycleLog.value.push(`[${new Date().toLocaleTimeString()}] ${msg}`)
 }
 
-let loadingTimer = null
+let loadingTimer: ReturnType<typeof setTimeout> | null = null
 
 // TODO 1: 在 onMounted 中：
 //   a. addLog('onMounted 觸發：元件已掛載到 DOM')

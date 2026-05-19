@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q09 — 參考答案：事件處理與修飾符 */
 import { ref } from 'vue'
 
@@ -7,7 +7,7 @@ const bubbleLog = ref('')
 const formLog = ref('')
 const inputLog = ref('')
 
-function handleClick(event) {
+function handleClick(event: MouseEvent): void {
   clickLog.value = `被點擊！座標：(${event.clientX}, ${event.clientY})`
 }
 
@@ -23,8 +23,8 @@ function handleFormSubmit() {
   formLog.value = '表單提交成功（頁面未重新整理！）'
 }
 
-function handleEnterKey(event) {
-  inputLog.value = `Enter！輸入值是：「${event.target.value}」`
+function handleEnterKey(event: KeyboardEvent): void {
+  inputLog.value = `Enter！輸入值是：「${(event.target as HTMLInputElement).value}」`
 }
 </script>
 

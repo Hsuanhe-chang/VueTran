@@ -1,10 +1,19 @@
-<script setup>
+﻿<script setup lang="ts">
 /** _HeavyDashboard.vue — 模擬載入耗時的重型元件（已提供，不需修改）
  *  使用 Suspense 友好的 async setup() 模擬 1.2 秒的載入延遲
  */
 
+// 定義儀表板統計資料的型別
+interface DashboardStats {
+  users:   number
+  orders:  number
+  revenue: string
+  growth:  string
+}
+
 // 模擬向後端拉取儀表板資料（1.2 秒延遲）
-const stats = await new Promise((resolve) =>
+// 帶入泛型參數 DashboardStats，避免 stats 被推斷為 unknown
+const stats = await new Promise<DashboardStats>((resolve) =>
   setTimeout(() => resolve({
     users:    1284,
     orders:   382,

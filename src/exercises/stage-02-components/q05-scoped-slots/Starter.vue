@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — Scoped Slots（作用域插槽）（從零撰寫）
  *  DataList 元件透過 scoped slot 暴露每個 item 和 index，
  *  你（父層）需要用 v-slot 接收並自訂渲染方式。

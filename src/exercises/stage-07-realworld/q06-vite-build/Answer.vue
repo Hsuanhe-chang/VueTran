@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Vite 建置優化（Code Splitting / 動態 import）（解答）
  *
  *  TODO 解答：
@@ -12,7 +12,7 @@
  *  - errorComponent：網路錯誤或 timeout 時顯示
  *  - delay：超過此時間才顯示 loading（避免閃爍）
  */
-import { ref, defineAsyncComponent, defineComponent } from 'vue'
+import { ref, defineAsyncComponent, defineComponent, type AsyncComponentLoader } from 'vue'
 
 // ── 模擬「重型元件」的動態載入 ───────────────────────────
 const shouldFail = ref(false)
@@ -79,9 +79,10 @@ const ErrorDisplay = defineComponent({
 
 // ✅ TODO 1 解答：defineAsyncComponent 完整設定
 // 真實場景中 loader 會是 () => import('./HeavyDashboard.vue')
+// createHeavyDashboardLoader 回傳 Promise<unknown>，需斷言為 AsyncComponentLoader
 const HeavyDashboard = defineAsyncComponent({
   // loader 是回傳 Promise<ComponentDefinition> 的函式
-  loader: createHeavyDashboardLoader,
+  loader: createHeavyDashboardLoader as AsyncComponentLoader,
   // 載入期間顯示骨架屏（避免使用者看到空白）
   loadingComponent: SkeletonLoader,
   // 載入失敗時顯示錯誤訊息

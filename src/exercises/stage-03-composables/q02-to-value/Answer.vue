@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — 響應式參數傳遞（toValue / MaybeRef）（解答）
  *
  *  核心概念：
@@ -6,11 +6,11 @@
  *  - 搭配 computed 確保來源有響應性時結果自動更新
  *  - 型別別名 MaybeRefOrGetter<T> = T | Ref<T> | (() => T)（Vue 3.3+）
  */
-import { ref, computed, toValue } from 'vue'
+import { ref, computed, toValue, type MaybeRefOrGetter } from 'vue'
 
 // ── useFormatPrice composable ─────────────────────────────────
 // source: MaybeRefOrGetter<number> — 可傳入數值、ref 或 getter 函式
-function useFormatPrice(source, currency = 'TWD') {
+function useFormatPrice(source: MaybeRefOrGetter<number>, currency = 'TWD') {
   return computed(() => {
     // toValue 統一取得當前數值：
     //   toValue(299)           → 299

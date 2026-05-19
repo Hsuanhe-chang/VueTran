@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — storeToRefs 保持響應性（解答）
  *
  *  修正的 3 個 Bug：

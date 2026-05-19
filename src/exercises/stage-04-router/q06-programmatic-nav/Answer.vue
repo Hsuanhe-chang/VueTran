@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — 程式化導航（useRouter）（解答）
  *
  *  核心概念：
@@ -9,11 +9,17 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+// ── 導航日誌每筆紀錄的形狀 ──────────────────────────────────
+interface LogEntry {
+  msg: string   // 導航動作說明文字
+  time: string  // 執行時間（格式化字串）
+}
+
 const router = useRouter()  // 取得 router 實例（用於程式化導航）
 const route  = useRoute()   // 取得 route 實例（用於讀取當前路由資訊）
 
-const navLog = ref([])
-function log(msg) {
+const navLog = ref<LogEntry[]>([])  // 明確指定元素型別，避免 TS 推斷為 never[]
+function log(msg: string): void {
   navLog.value.unshift({ msg, time: new Date().toLocaleTimeString() })
 }
 </script>

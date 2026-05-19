@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q12 — 參考答案：Template Refs */
 import { ref, useTemplateRef, onMounted } from 'vue'
 

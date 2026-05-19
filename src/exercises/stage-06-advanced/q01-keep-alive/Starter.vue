@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — KeepAlive 快取元件狀態（填空 + 找錯誤）
  *
  *  KeepAlive 包住動態元件，讓離開的元件實例被快取而非銷毀。

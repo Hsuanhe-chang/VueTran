@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — 導航守衛（beforeEach / beforeEnter）（解答）
  *
  *  核心概念：
@@ -8,6 +8,29 @@
  *  4. to.matched.some(r => r.meta.xxx) → 正確讀取巢狀路由的 meta
  */
 import { ref } from 'vue'
+
+// ── 導航日誌每筆紀錄的形狀 ──────────────────────────────────
+interface NavLog {
+  from: string        // 來源頁面名稱
+  to: string          // 目標頁面名稱
+  result: string      // 守衛結果：'allow' | 'deny' | 'redirect'
+  isLoggedIn: boolean // 執行時的登入狀態
+  role: string        // 執行時的使用者角色
+  time: string        // 執行時間（格式化字串）
+}
+
+// ── 路由 meta 的形狀 ─────────────────────────────────────────
+interface RouteMeta {
+  requiresAuth: boolean   // 是否需要登入
+  roles?: string[]        // 允許的角色清單（選填）
+}
+
+// ── 路由項目的形狀（routes 陣列中每個元素） ──────────────────
+interface RouteItem {
+  name: string   // 路由名稱
+  path: string   // 路由路徑
+  meta: RouteMeta
+}
 
 const isLoggedIn = ref(false)
 const userRole   = ref('guest')
@@ -21,10 +44,10 @@ const routes = [
 ]
 
 const currentPage = ref({ name: 'home', path: '/' })
-const navLog      = ref([])
+const navLog      = ref<NavLog[]>([])  // 明確指定元素型別，避免 TS 推斷為 never[]
 
 // ── checkAuth：模擬 router.beforeEach 守衛邏輯 ────────────────
-function checkAuth(target) {
+function checkAuth(target: RouteItem) {
   // 1. 公開頁面（requiresAuth = false）— 直接允許，不做任何檢查
   if (!target.meta.requiresAuth) return 'allow'
 
@@ -39,7 +62,7 @@ function checkAuth(target) {
   return 'allow'
 }
 
-function simulateNavigation(target) {
+function simulateNavigation(target: RouteItem): void {
   const result = checkAuth(target)
   navLog.value.unshift({
     from: currentPage.value.name,

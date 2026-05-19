@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — Composable 函式設計原則（解答）
  *
  *  Composable 三大核心原則：

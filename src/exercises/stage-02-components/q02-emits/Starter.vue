@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — defineEmits 事件宣告與觸發（從零撰寫）
  *  你正在實作 FeedbackWidget 元件。
  *  父層會這樣監聽事件：
@@ -13,7 +13,7 @@ import { ref } from 'vue'
 const submitted   = ref(false)
 const lastFeedback = ref('')      // 'positive' | 'negative' | ''
 // 模擬「父層收到 emit 後的反應」記錄
-const emitLog     = ref([])
+const emitLog     = ref<string[]>([])  // 明確標注為字串陣列，避免空陣列推斷為 never[]
 
 // ── TODO 1：宣告 emit ──────────────────────────────────────
 // 使用 defineEmits 宣告此元件會發出的事件：

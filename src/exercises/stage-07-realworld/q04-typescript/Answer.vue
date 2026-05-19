@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — TypeScript 與 Vue 3 整合（JSDoc 型別 + defineProps 驗證）（解答）
  *
  *  TODO 解答：
@@ -20,6 +20,16 @@
  * }} User
  */
 
+// ── TypeScript 介面定義（lang="ts" 環境中需要實際的 TS 介面，不能僅靠 JSDoc）
+// 此介面同時教學 TypeScript 全程型別檢查的最佳實踐
+interface User {
+  id: number
+  name: string
+  email: string
+  role: 'admin' | 'editor' | 'viewer'
+  createdAt: string
+}
+
 // ✅ TODO 2：defineProps 加入完整型別驗證
 const props = defineProps({
   /**
@@ -33,10 +43,12 @@ const props = defineProps({
     validator: (val) => {
       if (!val || typeof val !== 'object') return false
       const validRoles = ['admin', 'editor', 'viewer']
+      // 將 val 斷言為 Record 型別，就能安全存取動態屬性
+      const u = val as Record<string, unknown>
       return (
-        typeof val.name === 'string' &&
-        typeof val.email === 'string' &&
-        validRoles.includes(val.role)
+        typeof u.name === 'string' &&
+        typeof u.email === 'string' &&
+        validRoles.includes(u.role as string)
       )
     }
   },
@@ -55,7 +67,8 @@ const props = defineProps({
  * @param {User} user - 使用者物件
  * @returns {string} 格式化後的標籤字串
  */
-function formatUserLabel(user) {
+// user 參數使用 User 介面，提供編譯期完整型別安全
+function formatUserLabel(user: User): string {
   return `${user.name} <${user.email}>`
 }
 
@@ -64,7 +77,8 @@ function formatUserLabel(user) {
  * @param {'admin' | 'editor' | 'viewer'} role
  * @returns {string} CSS color 值
  */
-function getRoleColor(role) {
+// role 使用 User.role 聯合型別，確保 ROLE_COLORS 索引安全
+function getRoleColor(role: 'admin' | 'editor' | 'viewer'): string {
   const ROLE_COLORS = {
     admin:  'var(--color-primary)',
     editor: '#16a34a',
@@ -73,8 +87,8 @@ function getRoleColor(role) {
   return ROLE_COLORS[role] ?? '#64748b'
 }
 
-// 預覽用假資料（實際使用時由父元件傳入）
-const previewUser = {
+// 預覽用假資料（實際使用時由父元件傳入）—將物件字面標註為 User 型別
+const previewUser: User = {
   id: 1, name: '王小明', email: 'ming@example.com',
   role: 'admin', createdAt: '2024-01-15'
 }

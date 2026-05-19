@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — 導航守衛（beforeEach / beforeEnter）（從零撰寫）
  *
  *  守衛回傳值代表的意思：
@@ -10,7 +10,28 @@
  *  本元件在元件內模擬守衛邏輯，概念與真實 beforeEach 完全相同。
  */
 import { ref } from 'vue'
+// ── 導航日誌每筆紀錄的形狀 ──────────────────────────────────
+interface NavLog {
+  from: string        // 來源頁面名稱
+  to: string          // 目標頁面名稱
+  result: string      // 守衛結果：'allow' | 'deny' | 'redirect'
+  isLoggedIn: boolean // 執行時的登入狀態
+  role: string        // 執行時的使用者角色
+  time: string        // 執行時間（格式化字串）
+}
 
+// ── 路由 meta 的形狀 ─────────────────────────────────────────
+interface RouteMeta {
+  requiresAuth: boolean   // 是否需要登入
+  roles?: string[]        // 允許的角色清單（選填）
+}
+
+// ── 路由項目的形狀（routes 陣列中每個元素） ──────────────────
+interface RouteItem {
+  name: string   // 路由名稱
+  path: string   // 路由路徑
+  meta: RouteMeta
+}
 // ── 模擬 Auth 狀態 ────────────────────────────────────────────
 const isLoggedIn = ref(false)   // 模擬登入狀態
 const userRole   = ref('guest') // 可選：'guest' / 'user' / 'admin'
@@ -29,7 +50,7 @@ const routes = [
 const currentPage = ref({ name: 'home', path: '/' })
 
 // ── 導航日誌（記錄守衛執行結果）─────────────────────────────
-const navLog = ref([])
+const navLog = ref<NavLog[]>([])  // 明確指定元素型別，避免 TS 推斷為 never[]
 
 // ── TODO：實作 checkAuth（模擬 beforeEach 守衛）──────────────
 // 參數 target：模擬 `to`（導航目標路由）
@@ -37,7 +58,7 @@ const navLog = ref([])
 //   'allow'    → 允許導航（通過）
 //   'deny'     → 拒絕導航（403，留在原頁面）
 //   'redirect' → 重導向到登入頁
-function checkAuth(target) {
+function checkAuth(target: RouteItem) {
   // TODO 1：若 target.meta.requiresAuth 為 false，直接允許（公開頁面）
   // TODO 2：若需要認證但 isLoggedIn.value 為 false → 重導向到登入頁
   // TODO 3：若已登入但 userRole.value 不在 target.meta.roles 中 → 拒絕（403）
@@ -47,7 +68,7 @@ function checkAuth(target) {
 }
 
 // ── simulateNavigation：點擊頁面按鈕時呼叫 ───────────────────
-function simulateNavigation(target) {
+function simulateNavigation(target: RouteItem): void {
   const result = checkAuth(target)
   const logEntry = {
     from: currentPage.value.name,

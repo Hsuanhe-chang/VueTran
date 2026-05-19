@@ -1,10 +1,8 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q08 — 動態元件（component :is）（填空）
  *  根據使用者點擊的 Tab，動態渲染對應的子元件。
  */
-import { ref, h } from 'vue'
-
-// ── 三個 Tab 內容元件（已提供，使用 render function 避免需要額外檔案）──
+import { ref, h, type Component } from 'vue'
 // render function 是 Vue 不需要 template compiler 就能運作的寫法
 const TabHome = {
   name: 'TabHome',
@@ -12,7 +10,8 @@ const TabHome = {
     const note = ref('')
     return { note }
   },
-  render() {
+  // 顯式標注 this 型別，TypeScript 無法自動從 setup() 返回型推斷元件實例屬性
+  render(this: { note: string }) {
     return h('div', { class: 'tab-body' }, [
       h('h4', '🏠 首頁'),
       h('p', '歡迎使用動態元件！切換 Tab 時，此欄位的內容會被清除（除非用 KeepAlive）。'),
@@ -20,7 +19,7 @@ const TabHome = {
         class: 'tab-input',
         placeholder: '試著輸入文字，再切換 Tab...',
         value: this.note,
-        onInput: (e) => { this.note = e.target.value },
+        onInput: (e) => { this.note = (e.target as HTMLInputElement).value },  // 斷言為 HTMLInputElement 才能存取 .value
       }),
     ])
   },
@@ -60,14 +59,16 @@ const TabSettings = {
 }
 
 // Tab 列表設定
-const tabs = [
+// Component 型別對應 Vue 元件物件，符合 <component :is> 的屬性型別要求
+const tabs: { label: string; component: Component }[] = [
   { label: '🏠 首頁',    component: TabHome     },
   { label: '👤 個人',    component: TabProfile  },
   { label: '⚙️ 設定',   component: TabSettings },
 ]
 
 // 目前選中的 Tab（存放元件物件，而非字串）
-const activeTab = ref(TabHome)
+// 明確標注為 Component 型別，將來 tab.component 才能正確賦值給 activeTab
+const activeTab = ref<Component>(TabHome)
 </script>
 
 <template>

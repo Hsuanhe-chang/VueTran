@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：購物車（多 Store 協作）（練習）
  *
  *  整合概念：
@@ -12,6 +12,32 @@
  */
 import { ref, computed }             from 'vue'
 import { defineStore, storeToRefs }  from 'pinia'
+
+// ── 型別定義 ────────────────────────────────────────────────────
+/** 商品資料型別 */
+interface Product {
+  id: string
+  name: string
+  category: string
+  price: number
+}
+/** 購物車品項型別 */
+interface CartItem {
+  productId: string
+  name: string
+  price: number
+  qty: number
+}
+/** 訂單型別 */
+interface Order {
+  id: number
+  name: string
+  address: string
+  note: string
+  items: CartItem[]
+  total: number
+  time: string
+}
 
 // ════════════════════════════════════════════════════════════════
 // ① useProductStore — 商品目錄
@@ -31,11 +57,11 @@ const useProductStore = defineStore('products-q99', {
   getters: {
     // TODO 1：filteredProducts — 依 selectedCategory 篩選
     // 'all' 時回傳全部，否則回傳 category 符合的商品
-    filteredProducts: /* TODO */ null,
+    filteredProducts: /* TODO */ null as any, // as any 避免 null getter 導致 defineStore overload 錯誤
   },
 
   actions: {
-    setCategory(cat) { this.selectedCategory = cat },
+    setCategory(cat: string) { this.selectedCategory = cat }, // 參數加型別避免隱式 any
   },
 })
 
@@ -44,35 +70,35 @@ const useProductStore = defineStore('products-q99', {
 // ════════════════════════════════════════════════════════════════
 const useCartStore = defineStore('cart-q99', {
   state: () => ({
-    // 格式：[{ productId, name, price, qty }]
-    items: [],
+    // 明確型別：避免推断為 never[]
+    items: [] as CartItem[],
   }),
 
   getters: {
     // TODO 2：totalQty — 所有商品數量加總（用於 badge 顯示）
-    totalQty: /* TODO */ null,
+    totalQty:   /* TODO */ null as any,
 
     // TODO 3：totalPrice — 所有商品 price × qty 加總
-    totalPrice: /* TODO */ null,
+    totalPrice: /* TODO */ null as any,
   },
 
   actions: {
     // TODO 4：addItem(product)
     // - 若購物車已有該商品（productId 相同），qty + 1
     // - 若沒有，push { productId: product.id, name: product.name, price: product.price, qty: 1 }
-    addItem(product) {
+    addItem(product: Product) {
       /* TODO */
     },
 
     // TODO 5：removeItem(productId) — 從 items 移除對應商品
-    removeItem(productId) {
+    removeItem(productId: string) {
       /* TODO */
     },
 
     // TODO 6：updateQty(productId, delta)
     // - 找到商品，qty += delta
     // - 若 qty <= 0，移除該商品
-    updateQty(productId, delta) {
+    updateQty(productId: string, delta: number) {
       /* TODO */
     },
 
@@ -95,9 +121,9 @@ const useCheckoutStore = defineStore('checkout-q99', {
       note:    '',
     },
     // 欄位驗證錯誤訊息
-    errors: {},
+    errors: {} as Record<string, string>, // 明確型別：允許動態鍵存取錯誤訊息
     // 歷史訂單
-    orders: [],
+    orders: [] as Order[],               // 明確型別：避免推断為 never[]
   }),
 
   actions: {

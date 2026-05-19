@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — Scoped Slots（作用域插槽）（解答）
  *
  *  核心概念：
@@ -9,6 +9,15 @@
  */
 import { ref } from 'vue'
 import DataList from './_DataList.vue'
+
+// 課程資料型別定義（對應傳入 DataList 的 items）
+interface Course {
+  id: number
+  name: string
+  price: number
+  level: string
+  enrolled: number
+}
 
 const courses = ref([
   { id: 1, name: 'Vue 3 完整課程', price: 799, level: '入門', enrolled: 1250 },
@@ -32,20 +41,21 @@ const courses = ref([
       <DataList :items="courses">
         <!-- #default 是 v-slot:default 的簡寫 -->
         <template #default="{ item, index }">
+          <!-- item 的基底型別為 DataItem，需雙重斷言為 Course 以取得完整型別 -->
           <div class="course-row">
             <!-- 序號 -->
             <span class="rank">{{ index + 1 }}</span>
 
             <!-- 課程名稱與等級 -->
             <div class="course-info">
-              <span class="course-name">{{ item.name }}</span>
-              <span :class="['level-badge', `level-${item.level}`]">{{ item.level }}</span>
+              <span class="course-name">{{ (item as unknown as Course).name }}</span>
+              <span :class="['level-badge', `level-${(item as unknown as Course).level}`]">{{ (item as unknown as Course).level }}</span>
             </div>
 
             <!-- 報名人數與價格 -->
             <div class="course-meta">
-              <span class="enrolled">👥 {{ item.enrolled }} 人</span>
-              <span class="price">NT$ {{ item.price }}</span>
+              <span class="enrolled">👥 {{ (item as unknown as Course).enrolled }} 人</span>
+              <span class="price">NT$ {{ (item as unknown as Course).price }}</span>
             </div>
           </div>
         </template>

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — storeToRefs 保持響應性（找錯誤）
  *
  *  直接解構 store 的 state/getter 會失去響應性！

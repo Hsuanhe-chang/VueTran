@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — Fallthrough Attributes（找錯誤）
  *  你正在實作 CustomButton 元件，它封裝了一個 <button>。
  *  問題：父層加的 class / style / id 等 attrs 會落到最外層的 <div>，

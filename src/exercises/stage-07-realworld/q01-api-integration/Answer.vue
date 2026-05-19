@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — API 整合模式（useFetch Composable）（解答）
  *
  *  TODO 解答：
@@ -10,7 +10,7 @@
  *  - 傳入 ref 讓 composable 能響應端點切換
  *  - execute 作為手動重試的入口
  */
-import { ref, onMounted, toValue } from 'vue'
+import { ref, onMounted, toValue, type Ref } from 'vue'
 
 // ── 模擬 API ─────────────────────────────────────────────
 const shouldFail = ref(false)
@@ -28,13 +28,14 @@ const MOCK_DATA = {
   ]
 }
 
-function mockApi(endpoint) {
+function mockApi(endpoint: string) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldFail.value) {
         reject(new Error('Network Error：API 伺服器無回應'))
       } else {
-        resolve(MOCK_DATA[endpoint] ?? [])
+        // 使用 as keyof typeof MOCK_DATA 確保型別安全索引
+        resolve(MOCK_DATA[endpoint as keyof typeof MOCK_DATA] ?? [])
       }
     }, 800)
   })
@@ -43,10 +44,12 @@ function mockApi(endpoint) {
 // ═══════════════════════════════════════════════════════
 // ✅ TODO 1 解答：useFetch composable 完整實作
 // ═══════════════════════════════════════════════════════
-function useFetch(endpoint) {
-  const data      = ref(null)
+// 支援傳入 string 或 Ref<string>，內部用 toValue 統一讀取
+function useFetch(endpoint: string | Ref<string>) {
+  // any 允許模板動態存取 /users 與 /posts 不同欄位（教學演示用）
+  const data      = ref<any>(null)
   const isLoading = ref(false)
-  const error     = ref(null)
+  const error     = ref<string | null>(null)  // null = 無錯誤，string = 錯誤訊息
 
   async function execute() {
     // 步驟 1：進入 loading 狀態，清除舊錯誤
@@ -58,8 +61,8 @@ function useFetch(endpoint) {
       const result = await mockApi(toValue(endpoint))
       data.value = result  // 步驟 3：存入資料
     } catch (e) {
-      // 步驟 4：捕捉錯誤，存入 error.value
-      error.value = e.message
+      // e 在 TypeScript strict 模式下是 unknown，需斷言為 Error 才能讀取 message
+      error.value = (e as Error).message
     } finally {
       // 步驟 5：無論成功或失敗，都結束 loading
       isLoading.value = false
@@ -81,7 +84,7 @@ const currentEndpoint = ref('/users')
 const { data, isLoading, error, execute } = useFetch(currentEndpoint)
 
 // 切換端點後重新載入
-function switchEndpoint(ep) {
+function switchEndpoint(ep: string): void {
   currentEndpoint.value = ep
   execute()
 }

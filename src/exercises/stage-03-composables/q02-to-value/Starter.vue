@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — 響應式參數傳遞（toValue / MaybeRef）（從零撰寫）
  *
  *  問題：Composable 的參數可能是：
@@ -8,7 +8,7 @@
  *
  *  用 toValue() 一律統一取值，不需手動 if/else 判斷類型。
  */
-import { ref, computed, toValue } from 'vue'
+import { ref, computed, toValue, type MaybeRefOrGetter } from 'vue'
 
 // ── TODO：實作 useFormatPrice composable ──────────────────────
 // 接受 source（值 | ref | getter）和 currency（預設 'TWD'）
@@ -26,7 +26,7 @@ import { ref, computed, toValue } from 'vue'
 //   })
 // }
 
-function useFormatPrice(source, currency = 'TWD') {
+function useFormatPrice(source: MaybeRefOrGetter<number>, currency = 'TWD') {
   // 請實作這裡
   return computed(() => '（尚未實作）')
 }

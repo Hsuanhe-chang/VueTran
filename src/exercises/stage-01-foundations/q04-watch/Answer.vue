@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q04 — 參考答案：watch 與 watchEffect
  *
@@ -23,13 +23,14 @@ const searchStatus = ref('')
 const lengthWarning = ref(false)
 
 // debounce timer 存放在普通 let（不需要響應式）
-let debounceTimer = null
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
 // watch 監聽 searchQuery 的變化
 // 加 { immediate: false } 是預設值，也可不寫（懶執行）
 watch(searchQuery, (newVal) => {
   // 清除之前的 timer（這是 debounce 的核心邏輯）
-  clearTimeout(debounceTimer)
+  // ?? undefined 用於解決 clearTimeout 不接受 null 的 TS 型別問題
+  clearTimeout(debounceTimer ?? undefined)
 
   // 若輸入框被清空，清除搜尋狀態
   if (!newVal.trim()) {

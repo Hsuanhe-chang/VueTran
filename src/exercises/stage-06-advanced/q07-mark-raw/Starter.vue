@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — markRaw / readonly / toRaw（填空）
  *
  *  這三個 API 管理響應式系統的邊界：
@@ -18,7 +18,13 @@ import { reactive, ref, isReactive, isReadonly, isProxy } from 'vue'
 // ── 模擬第三方 Chart 類別 ────────────────────────────────
 // 第三方 class 實例通常有大量內部狀態，不應被 Vue 響應式代理
 class MockChart {
-  constructor(options) {
+  // TypeScript 需要明確宣告 class 屬性，不能只靠 constructor 內賦値
+  options: { width: number; height: number }
+  canvas: HTMLCanvasElement | null
+  _internalState: Record<string, unknown>
+
+  // 明確標注 constructor 參數型別，避免 TS7006 隱式 any 錯誤
+  constructor(options: { width: number; height: number }) {
     this.options = options
     this.canvas = null         // 模擬 Canvas 元素引用
     this._internalState = {}   // 內部狀態（不應被追蹤）
@@ -99,7 +105,8 @@ function tryModifyConfig() {
     config.version = '9.9.9'
     tryModifyResult.value = '意外成功（不應該發生）'
   } catch (e) {
-    tryModifyResult.value = `❌ 修改失敗：${e.message}`
+    // e 在 TypeScript strict 模式下是 unknown，需先斷言為 Error 才能讀取 message
+    tryModifyResult.value = `❌ 修改失敗：${(e as Error).message}`
   }
   // Vue 的 readonly 不拋出例外，而是在 console 發出警告
   // 所以 tryModifyResult 會顯示「意外成功」，但實際上值沒有變

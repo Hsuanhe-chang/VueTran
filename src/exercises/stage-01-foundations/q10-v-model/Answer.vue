@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q10 — 參考答案：v-model 表單雙向綁定 */
 import { ref, reactive } from 'vue'
 

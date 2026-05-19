@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Store 之間的組合與相互呼叫（從零撰寫）
  *
  *  跨 Store 呼叫原則：
@@ -16,24 +16,25 @@ const useAuthStore = defineStore('auth-q06', {
     username:   '',
   }),
   actions: {
-    login(name)  { this.isLoggedIn = true;  this.username = name },
-    logout()     { this.isLoggedIn = false; this.username = '' },
+    login(name: string)  { this.isLoggedIn = true;  this.username = name },
+    logout()             { this.isLoggedIn = false; this.username = '' },
   },
 })
 
 // ── 【已完成】useNotificationStore — 管理通知訊息 ────────────────
 const useNotificationStore = defineStore('notification-q06', {
   state: () => ({
-    messages: [],  // [{ id, text, type: 'success'|'error'|'warning' }]
+    // 明確型別：避免推断為 never[] 導致 push 失敗
+    messages: [] as { id: number; text: string; type: string }[],  // [{ id, text, type: 'success'|'error'|'warning' }]
   }),
   actions: {
-    push(text, type = 'success') {
+    push(text: string, type: string = 'success') {
       const id = Date.now()
       this.messages.push({ id, text, type })
       // 3 秒後自動移除
       setTimeout(() => { this.messages = this.messages.filter(m => m.id !== id) }, 3000)
     },
-    dismiss(id) {
+    dismiss(id: number) {
       this.messages = this.messages.filter(m => m.id !== id)
     },
   },
@@ -42,7 +43,8 @@ const useNotificationStore = defineStore('notification-q06', {
 // ── 【TODO】useOrderStore — 整合 Auth 與 Notification ────────────
 const useOrderStore = defineStore('order-q06', {
   state: () => ({
-    orders:    [],   // [{ id, item, time }]
+    // 明確型別：避免推断為 never[]
+    orders:    [] as { id: number; item: string; time: string }[],   // [{ id, item, time }]
     isLoading: false,
   }),
 
@@ -51,14 +53,14 @@ const useOrderStore = defineStore('order-q06', {
     // 1. 取得 authStore 實例，檢查 isLoggedIn
     // 2. 若未登入：呼叫 notificationStore.push('請先登入', 'error')，然後 return
     // 3. 若已登入：新增訂單到 this.orders，呼叫通知 '訂單已成立！'
-    placeOrder(item) {
+    placeOrder(item: string) {
       /* TODO */
     },
 
     // TODO：cancelOrder(id)
     // 1. 從 this.orders 移除對應訂單
     // 2. 呼叫 notificationStore.push('訂單已取消', 'warning')
-    cancelOrder(id) {
+    cancelOrder(id: number) {
       /* TODO */
     },
   },

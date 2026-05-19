@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q08 — 路由查詢字串（Query Parameters）（從零撰寫）
  *
  *  Query params 特性：
@@ -40,17 +40,17 @@ const sortBy      = computed(() => 'default' /* route.query.sort ?? 'default' */
 
 // ── TODO 3：更新 query params 的函式 ─────────────────────────
 // 提示：router.replace({ query: { ...route.query, q: val } })
-function setSearch(val) {
+function setSearch(val: string): void {
   // TODO：用 router.replace 更新 query，保留其他 query params
   console.log('setSearch:', val, '（尚未實作）')
 }
 
-function setCategory(val) {
+function setCategory(val: string): void {
   // TODO：用 router.replace 更新 category query param
   console.log('setCategory:', val, '（尚未實作）')
 }
 
-function setSort(val) {
+function setSort(val: string): void {
   // TODO：用 router.replace 更新 sort query param
   console.log('setSort:', val, '（尚未實作）')
 }
@@ -84,7 +84,7 @@ const filteredProducts = computed(() => {
       <!-- 搜尋框 -->
       <input
         :value="searchQuery"
-        @input="setSearch($event.target.value)"
+        @input="setSearch(($event.target as HTMLInputElement).value)"
         type="text"
         class="search-input"
         placeholder="搜尋商品名稱…"
@@ -106,7 +106,7 @@ const filteredProducts = computed(() => {
       <!-- 排序 -->
       <div class="sort-row">
         <label>排序：</label>
-        <select :value="sortBy" @change="setSort($event.target.value)" class="sort-select">
+        <select :value="sortBy" @change="setSort(($event.target as HTMLSelectElement).value)" class="sort-select">
           <option v-for="opt in sortOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
         </select>
       </div>

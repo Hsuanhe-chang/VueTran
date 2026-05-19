@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — markRaw / readonly / toRaw（解答）
  *
  *  TODO 1 解答：markRaw(new MockChart({ ... }))
@@ -13,7 +13,13 @@ import { reactive, ref, markRaw, readonly, toRaw, isReactive, isReadonly, isProx
 
 // ── 模擬第三方 Chart 類別 ────────────────────────────────
 class MockChart {
-  constructor(options) {
+  // TypeScript 需要明確宣告 class 屬性，不能只靠 constructor 內賦値
+  options: { width: number; height: number }
+  canvas: HTMLCanvasElement | null
+  _internalState: Record<string, unknown>
+
+  // 明確標注 constructor 參數型別，避免 TS7006 隱式 any 錯誤
+  constructor(options: { width: number; height: number }) {
     this.options = options
     this.canvas = null
     this._internalState = {}
@@ -64,7 +70,8 @@ const tryModifyResult = ref('')
 
 function tryModifyConfig() {
   // readonly 不拋例外，而是在 console 輸出警告
-  config.version = '9.9.9'
+  // 型別斷言到 any：讓 TypeScript 允許此行赋値（演示 readonly 趙擋的教學程式碼）
+  ;(config as any).version = '9.9.9'
   // 因為 readonly 阻止修改，config.version 仍是原值
   tryModifyResult.value = config.version === '2.1.0'
     ? '✅ 修改被阻擋（readonly 生效）：version 仍為 ' + config.version

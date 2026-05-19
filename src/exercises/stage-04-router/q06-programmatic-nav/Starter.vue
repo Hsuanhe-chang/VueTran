@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — 程式化導航（useRouter）（填空）
  *
  *  useRouter() 讓你在 JavaScript 中執行導航（而不是 template 的 <RouterLink>）：
@@ -12,6 +12,12 @@
 import { ref } from 'vue'
 import { useRoute /* TODO：也需要 useRouter */ } from 'vue-router'
 
+// ── 導航日誌每筆紀錄的形狀 ──────────────────────────────────
+interface LogEntry {
+  msg: string   // 導航動作說明文字
+  time: string  // 執行時間（格式化字串）
+}
+
 // TODO：取得 router 實例
 // const router = useRouter()
 
@@ -19,8 +25,8 @@ import { useRoute /* TODO：也需要 useRouter */ } from 'vue-router'
 const route = useRoute()
 
 // 記錄導航動作日誌
-const navLog = ref([])
-function log(msg) {
+const navLog = ref<LogEntry[]>([])  // 明確指定元素型別，避免 TS 推斷為 never[]
+function log(msg: string): void {
   navLog.value.unshift({ msg, time: new Date().toLocaleTimeString() })
 }
 </script>

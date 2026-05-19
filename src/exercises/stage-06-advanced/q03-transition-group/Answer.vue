@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — TransitionGroup 列表動畫（解答）
  *
  *  關鍵重點：
@@ -23,7 +23,7 @@ function addItem() {
   items.value.unshift({ id: nextId++, text: label })
 }
 
-function removeItem(id) {
+function removeItem(id: number): void {
   items.value = items.value.filter(i => i.id !== id)
 }
 

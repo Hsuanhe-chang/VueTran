@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — Composable 與 Lifecycle 整合（useEventListener / useWindowSize）（填空）
  *
  *  核心概念：
@@ -12,14 +12,14 @@ import { ref, onMounted, onUnmounted } from 'vue'
 // target：事件目標（通常是 window 或 document）
 // event：事件名稱字串（如 'resize'、'keydown'）
 // callback：事件觸發時執行的函式
-function useEventListener(target, event, callback) {
+function useEventListener(target: EventTarget, event: string, callback: EventListener): void {
   // TODO 1：在元件掛載後（onMounted）綁定事件監聽器
   //         target.addEventListener(event, callback)
-  onMounted(/* TODO */)
+  onMounted(() => { /* TODO */ })
 
-  // TODO 2：在元件卸載時（onUnmounted）移除事件監聽器，避免記憶體洩漏
+  // TODO 2：在元件卸載時（onUnmounted）移除事件監聴器，避免記憶體洩漏
   //         target.removeEventListener(event, callback)
-  onUnmounted(/* TODO */)
+  onUnmounted(() => { /* TODO */ })
 }
 
 // ── useWindowSize：即時追蹤視窗寬高 ──────────────────────────
@@ -30,7 +30,7 @@ function useWindowSize() {
 
   // TODO 3：呼叫 useEventListener，監聽 window 的 'resize' 事件
   //         在回調中更新 width.value 和 height.value
-  useEventListener(window, 'resize', /* TODO：() => { ... } */)
+  useEventListener(window, 'resize', () => { /* TODO */ })
 
   return { width, height }
 }

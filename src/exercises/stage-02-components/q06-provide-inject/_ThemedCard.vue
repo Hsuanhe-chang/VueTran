@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** _ThemedCard.vue — 已提供的子元件（不需修改）
  *  透過 inject 取得父層提供的 theme 和 toggleTheme。
  *  當父層正確呼叫 provide() 後，這個元件的外觀會跟著主題變化。

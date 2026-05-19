@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — 動態路由參數（:id）與 useRoute（解答）
  *
  *  核心概念：

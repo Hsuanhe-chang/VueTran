@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — TypeScript 與 Vue 3 整合（JSDoc 型別 + defineProps 驗證）（練習）
  *
  *  本專案使用 JavaScript，透過 JSDoc 與 defineProps validator 增加型別安全。
@@ -28,7 +28,8 @@ const props = defineProps({
 //  * @param {User} user
 //  * @returns {string}
 //  */
-function formatUserLabel(user) {
+// 已提供實作，第一個參數給予最小必要型別避免 TS 隱式 any 錯誤
+function formatUserLabel(user: { name: string; email: string }): string {
   return `${user.name} <${user.email}>`
 }
 
@@ -39,8 +40,10 @@ const ROLE_COLORS = {
   viewer: '#64748b'
 }
 
-function getRoleColor(role) {
-  return ROLE_COLORS[role] ?? '#64748b'
+// 已提供實作，getRoleColor 函式加上參數型別
+// role: string + keyof 斷言避免 "Element implicitly has an 'any' type" 索引錯誤
+function getRoleColor(role: string): string {
+  return ROLE_COLORS[role as keyof typeof ROLE_COLORS] ?? '#64748b'
 }
 </script>
 

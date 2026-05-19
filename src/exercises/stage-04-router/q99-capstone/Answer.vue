@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：含權限控制的多頁面路由系統（解答）
  *
  *  整合概念：
@@ -11,10 +11,33 @@
  */
 import { ref, computed } from 'vue'
 
+// ── 路由 meta 的形狀（requiresAuth/roles 為可選，允許 login-page 等特殊路由） ──────
+interface RouteMeta {
+  title: string             // 頁面標題（必填）
+  requiresAuth?: boolean    // 是否需要登入（選填）
+  roles?: string[] | null   // 允許的角色清單（選填）
+  breadcrumb?: string[]     // 麵包屑路徑陣列（選填）
+}
+
+// ── Mock 路由項目的形狀 ──────────────────────────────────────────────
+interface MockRoute {
+  name: string   // 路由名稱
+  meta: RouteMeta
+}
+
+// ── 導航守衛回傳值的型別 ───────────────────────────────────────────
+type AuthResult = 'allowed' | 'denied' | 'login'
+
+// ── 被守衛攔截後暫存的目標路由 ─────────────────────────────────────
+interface PendingRoute {
+  name: string          // 路由名稱
+  postId: string | null // 文章 ID（對應動態 params）
+}
+
 const isLoggedIn = ref(false)
 const userRole   = ref('guest')
 
-const mockRoutes = [
+const mockRoutes: MockRoute[] = [  // 明確標註型別，避免 TS 推斷過鬼
   { name: 'home',    meta: { title: '首頁',     requiresAuth: false, roles: null,            breadcrumb: ['首頁'] } },
   { name: 'posts',   meta: { title: '文章列表', requiresAuth: true,  roles: ['user','admin'], breadcrumb: ['首頁', '文章'] } },
   { name: 'post',    meta: { title: '文章詳情', requiresAuth: true,  roles: ['user','admin'], breadcrumb: ['首頁', '文章', '詳情'] } },
@@ -29,14 +52,14 @@ const posts = [
   { id: '4', title: 'Node.js 後端 REST API',      category: '後端' },
 ]
 
-const currentRoute  = ref(mockRoutes[0])
-const currentPostId = ref(null)
-const searchQuery   = ref('')
-const pendingRoute  = ref(null)  // 記住被守衛攔截的目標路由，登入後 redirect
-const accessResult  = ref(null)
+const currentRoute  = ref<MockRoute>(mockRoutes[0])   // 明確型別，允許後續賴入特殊路由（e.g. login-page）
+const currentPostId = ref<string | null>(null)         // 文章詳情的 :id（null = 未選中文章）
+const searchQuery   = ref('')                          // Posts 搜尋 query
+const pendingRoute  = ref<PendingRoute | null>(null)  // 被守衛攔截的目標路由，登入後 redirect
+const accessResult  = ref<AuthResult | null>(null)    // 最近一次守衛結果：null / 'allowed' / 'denied' / 'login'
 
 // 導航守衛：整合 meta.requiresAuth、meta.roles、isLoggedIn、userRole
-function checkAuth(target) {
+function checkAuth(target: MockRoute): AuthResult {
   // 公開頁面，直接允許
   if (!target.meta.requiresAuth) return 'allowed'
 
@@ -51,7 +74,7 @@ function checkAuth(target) {
   return 'allowed'
 }
 
-function simulateNav(routeName, postId = null) {
+function simulateNav(routeName: string, postId: string | null = null): void {
   const target = mockRoutes.find(r => r.name === routeName)
   if (!target) return
 
@@ -72,7 +95,7 @@ function simulateNav(routeName, postId = null) {
   }
 }
 
-function login(role) {
+function login(role: string): void {
   isLoggedIn.value = true
   userRole.value   = role
 
@@ -82,15 +105,15 @@ function login(role) {
     pendingRoute.value = null
     simulateNav(name, postId)
   } else {
-    currentRoute.value = mockRoutes.find(r => r.name === 'home')
+    currentRoute.value = mockRoutes.find(r => r.name === 'home')!  // home 必存於 mockRoutes
   }
 }
 
-function logout() {
+function logout(): void {
   isLoggedIn.value   = false
   userRole.value     = 'guest'
   pendingRoute.value = null
-  currentRoute.value = mockRoutes.find(r => r.name === 'home')
+  currentRoute.value = mockRoutes.find(r => r.name === 'home')!  // home 必存於 mockRoutes
 }
 
 const filteredPosts = computed(() => {

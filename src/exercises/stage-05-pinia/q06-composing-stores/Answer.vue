@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Store 之間的組合與相互呼叫（解答）
  *
  *  重點：
@@ -17,23 +17,24 @@ const useAuthStore = defineStore('auth-q06-ans', {
     username:   '',
   }),
   actions: {
-    login(name)  { this.isLoggedIn = true;  this.username = name },
-    logout()     { this.isLoggedIn = false; this.username = '' },
+    login(name: string)  { this.isLoggedIn = true;  this.username = name },
+    logout()             { this.isLoggedIn = false; this.username = '' },
   },
 })
 
 // ── useNotificationStore（已完成）───────────────────────────────
 const useNotificationStore = defineStore('notification-q06-ans', {
   state: () => ({
-    messages: [],
+    // 明確型別：避免推断為 never[] 導致 push 失敗
+    messages: [] as { id: number; text: string; type: string }[],
   }),
   actions: {
-    push(text, type = 'success') {
+    push(text: string, type: string = 'success') {
       const id = Date.now()
       this.messages.push({ id, text, type })
       setTimeout(() => { this.messages = this.messages.filter(m => m.id !== id) }, 3000)
     },
-    dismiss(id) {
+    dismiss(id: number) {
       this.messages = this.messages.filter(m => m.id !== id)
     },
   },
@@ -42,12 +43,13 @@ const useNotificationStore = defineStore('notification-q06-ans', {
 // ── useOrderStore — 在 action 內呼叫其他 store ───────────────────
 const useOrderStore = defineStore('order-q06-ans', {
   state: () => ({
-    orders:    [],
+    // 明確型別：避免推断為 never[]
+    orders:    [] as { id: number; item: string; time: string }[],
     isLoading: false,
   }),
 
   actions: {
-    placeOrder(item) {
+    placeOrder(item: string) {
       // Options Store 的 action 內部才呼叫其他 store
       const authStore         = useAuthStore()
       const notificationStore = useNotificationStore()
@@ -66,7 +68,7 @@ const useOrderStore = defineStore('order-q06-ans', {
       notificationStore.push(`訂單已成立：${item} ✓`, 'success')
     },
 
-    cancelOrder(id) {
+    cancelOrder(id: number) {
       const notificationStore = useNotificationStore()
 
       // 移除訂單

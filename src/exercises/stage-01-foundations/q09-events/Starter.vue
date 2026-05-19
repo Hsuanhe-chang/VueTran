@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q09 — 事件處理與修飾符（從零撰寫）
  *  現況：UI 骨架已完成，你需要實作函式並在 template 中加上正確的事件綁定
  */
@@ -12,7 +12,7 @@ const inputLog = ref('')
 // TODO 1: 實作 handleClick(event)
 //         在 clickLog 顯示「被點擊！座標：(x, y)」
 //         提示：event.clientX, event.clientY
-function handleClick(event) {
+function handleClick(event: MouseEvent): void {
   // 請實作這裡
 }
 
@@ -39,7 +39,7 @@ function handleFormSubmit() {
 // TODO 5: 實作 handleEnterKey(event)
 //         在 inputLog 顯示目前的輸入值
 //         提示：event.target.value
-function handleEnterKey(event) {
+function handleEnterKey(event: KeyboardEvent): void {
   // 請實作這裡
 }
 </script>

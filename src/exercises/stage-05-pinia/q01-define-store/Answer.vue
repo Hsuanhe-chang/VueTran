@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — defineStore 基礎（Options 寫法）（解答）
  *
  *  重點：
@@ -14,8 +14,8 @@ const useCounterStore = defineStore('counter-q01-answer', {
 
   // state：初始化資料（必須是函式！）
   state: () => ({
-    count:   0,    // 計數器當前值
-    history: [],   // 每次操作的文字記錄
+    count:   0,                // 計數器當前值
+    history: [] as string[],   // 每次操作的文字記錄（型別明確為 string[]，避免 never[]）
   }),
 
   // getters：純計算，不修改 state

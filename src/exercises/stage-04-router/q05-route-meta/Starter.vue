@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — 路由 Meta 欄位與權限控制（功能實作）
  *
  *  路由 meta 是附加在路由設定上的自訂資料，可以放任何值：

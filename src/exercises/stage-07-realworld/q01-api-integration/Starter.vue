@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — API 整合模式（useFetch Composable）（練習）
  *
  *  真實專案中，API 呼叫邏輯封裝成 Composable 以便複用。
@@ -11,7 +11,7 @@
  *
  *  TODO 2：在元件中呼叫 useFetch，並在 template 渲染資料
  */
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, type Ref } from 'vue'
 
 // ── 模擬 API（不需要真實網路連線）──────────────────────
 // 延遲 800ms 後回傳假資料（或拋出錯誤）
@@ -30,13 +30,14 @@ const MOCK_DATA = {
   ]
 }
 
-function mockApi(endpoint) {
+function mockApi(endpoint: string) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldFail.value) {
         reject(new Error('Network Error：API 伺服器無回應'))
       } else {
-        resolve(MOCK_DATA[endpoint] ?? [])
+        // 使用 as keyof typeof MOCK_DATA 確保型別安全索引
+        resolve(MOCK_DATA[endpoint as keyof typeof MOCK_DATA] ?? [])
       }
     }, 800)
   })
@@ -44,8 +45,8 @@ function mockApi(endpoint) {
 
 // ═══════════════════════════════════════════════════════
 // TODO 1：實作 useFetch composable
-// ═══════════════════════════════════════════════════════
-function useFetch(endpoint) {
+// 支援傳入 string 或 Ref<string>，內部用 toValue 統一讀取
+function useFetch(endpoint: string | Ref<string>) {
   // 三個核心狀態
   const data      = ref(null)   // 請求成功後的資料
   const isLoading = ref(false)  // 請求進行中
@@ -85,7 +86,7 @@ const error     = ref(null)
 function execute() {}
 
 // 切換端點並重新載入
-function switchEndpoint(ep) {
+function switchEndpoint(ep: string): void {
   currentEndpoint.value = ep
   execute()
 }

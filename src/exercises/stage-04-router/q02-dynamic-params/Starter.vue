@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — 動態路由參數（:id）與 useRoute（從零撰寫）
  *
  *  動態路由：在 path 中用 `:名稱` 定義可變片段

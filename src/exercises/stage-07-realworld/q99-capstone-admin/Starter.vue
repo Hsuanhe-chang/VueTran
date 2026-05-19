@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：小型後台管理系統（練習）
  *
  *  整合 Stage 7 核心知識點：
@@ -11,6 +11,22 @@ import {
   ref, reactive, computed, onMounted, toValue,
   defineComponent, defineAsyncComponent
 } from 'vue'
+
+// ── 型別定義 ───────────────────────────────────────────────────
+/** 元件錯誤日誌的資料結構 */
+interface ErrorLog {
+  message: string
+  time: string
+}
+
+/** 使用者資料結構 */
+interface User {
+  id: number
+  name: string
+  email: string
+  role: string
+  status: string
+}
 
 // ── Mock API（模擬後端）───────────────────────────────────
 // Q05 回顧：使用 import.meta.env 讀取環境變數，未設定時 fallback 至 'mock'
@@ -30,14 +46,16 @@ const _mockUsers = ref([
  * @param {object|null} body - POST 資料（null 表示 GET）
  * @returns {Promise}
  */
-function mockApiCall(endpoint, body = null) {
+// endpoint: string + body: Record<string, unknown> | null = null 避免隱式 any 錯誤
+function mockApiCall(endpoint: string, body: Record<string, unknown> | null = null) {
   console.log(`[${API_BASE}] ${body ? 'POST' : 'GET'} ${endpoint}`)
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (endpoint === '/users') {
         resolve([..._mockUsers.value])
       } else if (endpoint === '/users/add' && body) {
-        const newUser = { id: Date.now(), ...body, status: 'active' }
+        // spread Record<string,unknown> 無法自動推斷必要欄位，用 as User 型別斷言
+        const newUser = { id: Date.now(), ...body, status: 'active' } as User
         _mockUsers.value.push(newUser)
         resolve(newUser)
       } else if (endpoint === '/stats') {
@@ -61,10 +79,13 @@ function mockApiCall(endpoint, body = null) {
  * 通用 Fetch Composable
  * @param {string | import('vue').Ref<string>} endpoint
  */
-function useFetch(endpoint) {
-  const data = ref(null)
+// endpoint: string 避免隱式 any 參數型別錯誤
+function useFetch(endpoint: string) {
+  // data: any 避免 Ref<null> 造成的資料設定型別衝突
+  const data = ref<any>(null)
   const isLoading = ref(false)
-  const error = ref(null)
+  // error 需接受 string，加上聯合型別避免 Ref<null> 設定失敗
+  const error = ref<string | null>(null)
 
   async function execute() {
     // TODO 1：完成以下步驟：
@@ -86,7 +107,8 @@ const users = useFetch('/users')
 // Q02 回顧：捕捉子元件在 setup() 或生命週期中拋出的錯誤
 
 /** 收集到的元件錯誤（顯示在頁面頂部）*/
-const componentErrors = ref([])
+// 加上 ErrorLog[] 泛型，避免 ref([]) 導致的 null value 錯誤
+const componentErrors = ref<ErrorLog[]>([])
 
 // TODO 2：在此加入 onErrorCaptured hook
 // 捕捉到錯誤時：
@@ -116,14 +138,16 @@ const form = reactive({ name: '', email: '', role: '' })
 const touched = reactive({ name: false, email: false, role: false })
 
 /** 標記欄位已被碰觸（blur 時觸發，控制何時顯示錯誤）*/
-function touch(field) { touched[field] = true }
+// keyof typeof touched 限定 field 必須是 touched 的已知鍵名
+function touch(field: keyof typeof touched): void { touched[field] = true }
 
 // TODO 3：完成 errors computed
 // 驗證規則：
 //   name：touched 後才驗證；必填，至少 2 個字
 //   email：touched 後才驗證；必填，必須包含 @ 符號
 //   role：touched 後才驗證；必填（不能為空字串）
-const errors = computed(() => {
+// 加上明確回傳型別，讓模板存取 errors.name / errors.email / errors.role 不報錯
+const errors = computed<{ name?: string; email?: string; role?: string }>(() => {
   return {}  // TODO 3：填入驗證邏輯，回傳 { name?: string, email?: string, role?: string }
 })
 
@@ -135,7 +159,8 @@ const submitSuccess = ref(false)
 
 async function handleSubmit() {
   // 強制觸碰所有欄位，讓錯誤訊息全部顯示
-  Object.keys(touched).forEach(k => (touched[k] = true))
+  // Object.keys 回傳 string[]，需轉型為 keyof typeof touched 才能安全索引
+  Object.keys(touched).forEach(k => ((touched as Record<string, boolean>)[k] = true))
   if (hasErrors.value) return
 
   isSubmitting.value = true
@@ -150,8 +175,9 @@ async function handleSubmit() {
     Object.assign(touched, { name: false, email: false, role: false })
     submitSuccess.value = true
     setTimeout(() => (submitSuccess.value = false), 3000)
-  } catch (e) {
-    componentErrors.value.push({ message: e.message, time: new Date().toLocaleTimeString() })
+  } catch (e: unknown) {
+    // e: unknown 用 instanceof 安全取得 message
+    componentErrors.value.push({ message: e instanceof Error ? e.message : String(e), time: new Date().toLocaleTimeString() })
   } finally {
     isSubmitting.value = false
   }
@@ -213,7 +239,8 @@ const StatsPanel = defineComponent({
 })
 
 /** 角色顯示顏色 */
-function getRoleClass(role) {
+// role: string 加上回傳型別 string，避免元素隱式任意索引型別錯誤
+function getRoleClass(role: string): string {
   return { admin: 'badge-admin', editor: 'badge-editor', viewer: 'badge-viewer' }[role] ?? ''
 }
 </script>

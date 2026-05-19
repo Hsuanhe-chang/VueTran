@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — defineProps 定義與型別驗證（解答）
  *
  *  核心概念：

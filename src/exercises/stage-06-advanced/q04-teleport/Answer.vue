@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — Teleport 傳送門（解答）
  *
  *  TODO 解答：

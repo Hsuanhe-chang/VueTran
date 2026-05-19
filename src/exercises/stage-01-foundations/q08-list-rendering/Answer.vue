@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q08 — 參考答案：v-for 列表渲染
  *
@@ -20,7 +20,7 @@ const students = ref([
   { id: 4, name: '陳美玲', score: 95 },
 ])
 
-function removeStudent(id) {
+function removeStudent(id: number): void {
   students.value = students.value.filter(s => s.id !== id)
 }
 </script>

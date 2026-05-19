@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Vite 建置優化（Code Splitting / 動態 import）（練習）
  *
  *  Code Splitting 讓首次載入只下載必要的 JS，其餘按需載入。

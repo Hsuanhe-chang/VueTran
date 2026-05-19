@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q07 — 參考答案：v-if / v-show 條件渲染
  *

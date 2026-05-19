@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q08 — 動態元件（component :is）（解答）
  *
  *  核心概念：
@@ -6,16 +6,15 @@
  *  - :is 接受元件物件（import 進來的）或全域註冊的元件名稱字串
  *  - <KeepAlive> 包裹後，切換元件時會「快取」而非「銷毀」，保留其狀態
  */
-import { ref, h } from 'vue'
-
-// Tab 元件定義（使用 render function，不需要額外 .vue 檔案）
+import { ref, h, type Component } from 'vue'
 const TabHome = {
   name: 'TabHome',
   setup() {
     const note = ref('')
     return { note }
   },
-  render() {
+  // 顯式標注 this 型別，TypeScript 無法自動從 setup() 返回型推斷元件實例屬性
+  render(this: { note: string }) {
     return h('div', { class: 'tab-body' }, [
       h('h4', '🏠 首頁'),
       h('p', '試著在下方輸入文字，切換 Tab 後回來——因為有 KeepAlive，文字不會消失！'),
@@ -23,7 +22,7 @@ const TabHome = {
         class: 'tab-input',
         placeholder: '輸入文字，切換 Tab 再回來...',
         value: this.note,
-        onInput: (e) => { this.note = e.target.value },
+        onInput: (e) => { this.note = (e.target as HTMLInputElement).value },  // 斷言為 HTMLInputElement 才能存取 .value
       }),
     ])
   },
@@ -56,13 +55,15 @@ const TabSettings = {
   ]),
 }
 
-const tabs = [
+// Component 型別對應 Vue 元件物件，符合 <component :is> 的屬性型別要求
+const tabs: { label: string; component: Component }[] = [
   { label: '🏠 首頁',  component: TabHome     },
   { label: '👤 個人',  component: TabProfile  },
   { label: '⚙️ 設定', component: TabSettings },
 ]
 
-const activeTab = ref(TabHome)
+// 明確標注為 Component 型別，將來 tab.component 才能正確賦值給 activeTab
+const activeTab = ref<Component>(TabHome)
 </script>
 
 <template>

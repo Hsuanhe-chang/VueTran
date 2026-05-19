@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — Actions 與非同步操作（解答）
  *
  *  重點：
@@ -26,9 +26,9 @@ let nextId = 4
 // ── 完整的 Actions 實作 ───────────────────────────────────────────
 const useUserListStore = defineStore('user-list-q04-ans', {
   state: () => ({
-    users:     [],
+    users:     [] as { id: number; name: string; role: string }[], // 明確型別：避免推断為 never[]
     isLoading: false,
-    error:     null,
+    error:     null as string | null, // 型別宣告：允許誊放字串或 null
   }),
 
   actions: {
@@ -40,8 +40,8 @@ const useUserListStore = defineStore('user-list-q04-ans', {
         // 等待 API 回傳，成功後更新 state
         this.users = await mockFetchUsers()
       } catch (e) {
-        // 失敗時把錯誤訊息存到 state，讓 template 顯示
-        this.error = e.message
+        // e 在 TypeScript 4.0+ 為 unknown 型，需先判斷再取 .message
+        this.error = e instanceof Error ? e.message : String(e)
       } finally {
         // 無論成功或失敗都關閉 loading
         this.isLoading = false
@@ -49,17 +49,17 @@ const useUserListStore = defineStore('user-list-q04-ans', {
     },
 
     // ② 同步 action：直接操作 state
-    addUser(name) {
+    addUser(name: string) {
       this.users.push({ id: nextId++, name, role: 'user' })
     },
 
     // ③ 同步 action：filter 產生新陣列並覆蓋
-    removeUser(id) {
+    removeUser(id: number) {
       this.users = this.users.filter(u => u.id !== id)
     },
 
     // ④ 同步 action：找到對象後切換 role
-    toggleRole(id) {
+    toggleRole(id: number) {
       const user = this.users.find(u => u.id === id)
       if (user) {
         // 三元運算切換兩個值

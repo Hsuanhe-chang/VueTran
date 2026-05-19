@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — Pinia Plugin 開發（解答）
  *
  *  Plugin 核心 API：
@@ -21,9 +21,9 @@ const useSettingsStore = defineStore('settings-q07-ans', {
     fontSize: 14,
   }),
   actions: {
-    setTheme(t)    { this.theme    = t },
-    setLanguage(l) { this.language = l },
-    setFontSize(s) { this.fontSize = s },
+    setTheme(t: string)    { this.theme    = t }, // 型別註解：避免參數隱式 any
+    setLanguage(l: string) { this.language = l },
+    setFontSize(s: number) { this.fontSize = s }, // fontSize 為 number，需要 number 型別
   },
 })
 
@@ -31,7 +31,7 @@ const store = useSettingsStore()
 
 // ── TODO 1 解答：store.$onAction 訂閱所有 action ──────────────────
 // $onAction 回傳 unsubscribe 函式，元件卸載時可呼叫清除監聽
-const actionLog = ref([])
+const actionLog = ref<string[]>([]) // 明確指定泛型為 string[]，避免推断為 never[]
 
 // 訂閱所有 action 執行
 store.$onAction(({ name, args }) => {
@@ -103,7 +103,7 @@ app.use(pinia)</pre>
         <input
           type="range" min="12" max="20" step="1"
           :value="store.fontSize"
-          @input="store.setFontSize(Number($event.target.value))"
+          @input="store.setFontSize(Number(($event.target as HTMLInputElement).value))"
           class="slider"
         />
         <span class="ctrl-value">{{ store.fontSize }}px</span>

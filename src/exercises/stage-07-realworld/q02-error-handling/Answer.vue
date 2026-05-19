@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — 全域錯誤處理（app.config.errorHandler）（解答）
  *
  *  TODO 解答：
@@ -13,12 +13,20 @@
  */
 import { ref, defineComponent, onErrorCaptured } from 'vue'
 
+// ── 錯誤日誌的資料結構定義 ──────────────────────────────────
+// 每筆日誌包含：message（錯誤訊息）、info（Vue 提供的位置說明）、time（發生時間）
+interface ErrorLog {
+  message: string
+  info: string
+  time: string
+}
+
 // ── 模擬會拋出錯誤的子元件 ──────────────────────────────
 const BuggyWidget = defineComponent({
   name: 'BuggyWidget',
   setup() {
     const errorTypes = [
-      { label: '型別錯誤',   fn: () => { null.toString() } },
+      { label: '型別錯誤',   fn: () => { (null as any).toString() } },
       { label: '自訂錯誤',   fn: () => { throw new Error('業務邏輯：資料格式不正確') } },
       { label: '非同步錯誤', fn: async () => { throw new Error('API 呼叫失敗：503 Service Unavailable') } },
     ]
@@ -39,8 +47,8 @@ const BuggyWidget = defineComponent({
   `
 })
 
-// ✅ TODO 2 解答：建立錯誤日誌陣列
-const errorLog = ref([])
+// ✅ TODO 2 解答：建立錯誤日誌陣列（加上 ErrorLog[] 泛型，避免 null value 錯誤）
+const errorLog = ref<ErrorLog[]>([])
 
 // ✅ TODO 1 解答：onErrorCaptured 捕捉子元件錯誤
 onErrorCaptured((err, instance, info) => {

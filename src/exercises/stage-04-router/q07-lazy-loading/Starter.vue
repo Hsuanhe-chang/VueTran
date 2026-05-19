@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — 路由懶載入（動態 import）（找錯誤 + 重構）
  *
  *  懶載入的優點：

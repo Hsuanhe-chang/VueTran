@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — 預設插槽與具名插槽（解答）
  *
  *  核心概念：

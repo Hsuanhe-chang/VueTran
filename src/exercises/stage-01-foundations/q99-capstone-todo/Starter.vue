@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q99 — 綜合題：Todo List 完整實作
  *

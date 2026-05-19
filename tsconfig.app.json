@@ -19,6 +19,9 @@
     "noImplicitAny": true,
 
     // 路徑別名：對應 vite.config.ts 的 @ alias → src/
+    // baseUrl 在 TypeScript 6.0+ 已棄用，改用 ignoreDeprecations 沉默警告
+    // 或直接搭配 paths 設定即可（bundler moduleResolution 不需 baseUrl）
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

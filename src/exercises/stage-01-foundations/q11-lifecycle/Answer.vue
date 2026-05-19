@@ -1,17 +1,17 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q11 — 參考答案：Lifecycle Hooks */
 import { ref, onMounted, onBeforeUnmount, onUpdated } from 'vue'
 
 const isLoading = ref(true)
-const data = ref(null)
+const data = ref<{ title: string; count: number } | null>(null)
 const updateCount = ref(0)
-const lifecycleLog = ref([])
+const lifecycleLog = ref<string[]>([])
 
-function addLog(msg) {
+function addLog(msg: string): void {
   lifecycleLog.value.push(`[${new Date().toLocaleTimeString()}] ${msg}`)
 }
 
-let loadingTimer = null
+let loadingTimer: ReturnType<typeof setTimeout> | null = null
 
 // onMounted：元件掛載到 DOM 後執行（適合啟動 API 請求）
 onMounted(() => {
@@ -28,7 +28,8 @@ onMounted(() => {
 // onBeforeUnmount：元件即將卸載時清除計時器
 // 若不清除，元件卸載後 timer 仍然執行，可能導致記憶體洩漏或操作已卸載的元件
 onBeforeUnmount(() => {
-  clearTimeout(loadingTimer)
+  // ?? undefined 用於解決 clearTimeout 不接受 null 的 TS 型別問題
+  clearTimeout(loadingTimer ?? undefined)
   addLog('onBeforeUnmount：清除計時器')
 })
 

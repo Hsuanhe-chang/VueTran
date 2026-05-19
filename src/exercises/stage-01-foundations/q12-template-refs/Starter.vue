@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q12 — Template Refs（從零撰寫）
  *  現況：響應式資料已準備，你需要用 useTemplateRef 取得 DOM 元素
  */

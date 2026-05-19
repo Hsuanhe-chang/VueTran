@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：帶動畫的頁面轉場與彈窗系統（練習）
  *
  *  整合 Stage 6 的三個核心技術：
@@ -11,7 +11,7 @@
  *  TODO 3：用 <Teleport to="body"> 包住 Modal 的 overlay div
  *  TODO 4：用 <Teleport to="body"> 包住 Toast 容器 div
  */
-import { ref, defineComponent, onMounted } from 'vue'
+import { ref, defineComponent, onMounted, type Component } from 'vue'
 
 // ── 頁面元件定義 ─────────────────────────────────────────
 // 重點：KeepAlive 的 include 比對的是元件的 name 選項（非變數名稱）
@@ -112,9 +112,10 @@ const tabs = [
 ]
 
 const currentTab  = ref('home')
-const currentPage = ref(HomePage)
+// 使用 Component 基礎型別，允許儲存三種頁面元件中的任意一種
+const currentPage = ref<Component>(HomePage)
 
-function switchTab(tab) {
+function switchTab(tab: typeof tabs[0]): void {
   currentTab.value  = tab.id
   currentPage.value = tab.component
 }
@@ -139,10 +140,10 @@ function cancelModal() {
 }
 
 // ── Toast 通知 ────────────────────────────────────────────
-const toasts = ref([])
+const toasts = ref<{ id: number; msg: string; type: string }[]>([])  // 明確標注，避免推斷為 never[]
 let toastId  = 0
 
-function addToast(msg, type = 'info') {
+function addToast(msg: string, type = 'info'): void {
   const id = ++toastId
   toasts.value.push({ id, msg, type })
   // 3 秒後自動移除

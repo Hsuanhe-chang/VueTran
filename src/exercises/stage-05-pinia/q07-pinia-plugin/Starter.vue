@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — Pinia Plugin 開發（填空）
  *
  *  Pinia Plugin 讓你為「所有 Store」統一加入屬性或行為。
@@ -26,9 +26,9 @@ const useSettingsStore = defineStore('settings-q07', {
     fontSize: 14,
   }),
   actions: {
-    setTheme(t)    { this.theme    = t },
-    setLanguage(l) { this.language = l },
-    setFontSize(s) { this.fontSize = s },
+    setTheme(t: string)    { this.theme    = t }, // 型別註解：避免參數隱式 any
+    setLanguage(l: string) { this.language = l },
+    setFontSize(s: number) { this.fontSize = s }, // fontSize 為 number，需要 number 型別
   },
 })
 
@@ -37,7 +37,7 @@ const store = useSettingsStore()
 // ── 日誌記錄（模擬 Plugin 的 $onAction 功能）─────────────────────
 // 在實際 Plugin 中：store.$onAction(({ name, args, after, onError }) => { ... })
 // 這裡我們在元件層級模擬訂閱，展示相同的效果
-const actionLog = ref([])
+const actionLog = ref<string[]>([]) // 明確指定泛型為 string[]，避免推断為 never[]
 
 // TODO 1：呼叫 store.$onAction，訂閱所有 action
 // 當任何 action 執行時，將 `${name}(${args.join(', ')})` push 進 actionLog
@@ -104,7 +104,7 @@ app.use(pinia)</pre>
         <input
           type="range" min="12" max="20" step="1"
           :value="store.fontSize"
-          @input="store.setFontSize(Number($event.target.value))"
+          @input="store.setFontSize(Number(($event.target as HTMLInputElement).value))"
           class="slider"
         />
         <span class="ctrl-value">{{ store.fontSize }}px</span>

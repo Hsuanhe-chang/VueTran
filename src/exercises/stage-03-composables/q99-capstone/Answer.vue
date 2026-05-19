@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：useLocalStorage + useDebouncedRef（解答）
  *
  *  核心概念：
@@ -11,7 +11,8 @@ import { ref, computed, watch, customRef } from 'vue'
 
 // ── useLocalStorage：資料持久化 ───────────────────────────────
 // 將 ref 初始值讀自 localStorage，並在值改變時自動寫回
-function useLocalStorage(key, defaultValue) {
+// 注意：使用泵型參數 T 確保傳入 defaultValue 與回傳的 ref 型別一致
+function useLocalStorage<T>(key: string, defaultValue: T) {
   // 嘗試從 localStorage 讀取已儲存的值（JSON 反序列化）
   // 若 key 不存在，localStorage.getItem 回傳 null，改用 defaultValue
   const stored = localStorage.getItem(key)
@@ -28,8 +29,11 @@ function useLocalStorage(key, defaultValue) {
 
 // ── useDebouncedRef：防抖 ref ─────────────────────────────────
 // 使用 customRef 自訂 get/set 行為：setter 延遲 delay ms 才更新值
-function useDebouncedRef(value, delay = 500) {
-  let timer = null  // 儲存 setTimeout 的 ID，用於清除上次的計時器
+// 泵型參數 T 讓 value 與回傳值一致
+function useDebouncedRef<T>(value: T, delay = 500) {
+  // 儲存 setTimeout 的 ID，型別為 ReturnType<typeof setTimeout> | undefined
+  // 用 undefined 而非 null 是因為 clearTimeout 接受 undefined 但不接受 null
+  let timer: ReturnType<typeof setTimeout> | undefined = undefined  // 儲存 setTimeout 的 ID，用於清除上次的計時器
 
   return customRef((track, trigger) => ({
     // get：每次讀取 ref 時呼叫
@@ -44,7 +48,7 @@ function useDebouncedRef(value, delay = 500) {
       clearTimeout(timer)  // 清除上次還未執行的延遲（防抖核心）
 
       timer = setTimeout(() => {
-        value = newVal  // 延遲後才真正更新閉包中的 value 變數
+        value = newVal as T  // 延遲後才真正更新閃包中的 value 變數（as T 是安全的，因為設定的值必然是 T）
         trigger()       // 告訴 Vue：「值已改變，依賴此 ref 的 computed/template 請重新計算」
       }, delay)
     }
@@ -105,7 +109,7 @@ const filteredNotes = computed(() => {
       <div class="search-row">
         <input
           :value="searchQuery"
-          @input="searchQuery = $event.target.value"
+          @input="searchQuery = ($event.target as HTMLInputElement).value"
           type="text"
           class="demo-input"
           placeholder="搜尋筆記…（停止輸入 300ms 後才過濾）"

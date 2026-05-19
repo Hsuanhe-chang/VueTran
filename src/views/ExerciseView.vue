@@ -4,7 +4,7 @@
  * 透過路由參數（stageId, questionId）查詢 stages.ts 中的 metadata，
  * 再用 defineAsyncComponent 懶載入元件，避免一次載入所有考題造成效能問題。
  */
-import { computed, shallowRef, watch, defineAsyncComponent, type Component } from 'vue'
+import { computed, shallowRef, watch, defineAsyncComponent, type Component, type AsyncComponentLoader } from 'vue'
 import { useRoute } from 'vue-router'
 import { getExercise, getAdjacentExercises } from '@/exercises/stages'
 import QuizLayout from '@/components/quiz/QuizLayout.vue'
@@ -43,12 +43,14 @@ watch(
     }
     // defineAsyncComponent 接受 loader 函式，errorComponent 在載入失敗時顯示（如檔案不存在）
     StarterComponent.value = defineAsyncComponent({
-      loader: ex.component,
+      // 將 () => Promise<unknown> 斷言為 AsyncComponentLoader，符合 defineAsyncComponent 的型別要求
+      loader: ex.component as AsyncComponentLoader,
       errorComponent: ExerciseComingSoon,
       delay: 200,
     })
     AnswerComponent.value = defineAsyncComponent({
-      loader: ex.answer,
+      // 同上，Answer.vue 的動態載入函式也需要型別斷言
+      loader: ex.answer as AsyncComponentLoader,
       errorComponent: ExerciseComingSoon,
       delay: 200,
     })

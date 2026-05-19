@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q09 — defineAsyncComponent 非同步載入（解答）
  *
  *  核心概念：

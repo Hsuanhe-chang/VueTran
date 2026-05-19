@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q01 — ref 與響應式基礎
  * 任務：讓下方的計數器按鈕正常運作

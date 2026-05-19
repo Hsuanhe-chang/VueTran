@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q99 — 參考答案：Todo List 完整實作
  *
@@ -24,7 +24,7 @@ const todos = ref([
 const newTodoText = ref('')
 
 // 篩選狀態：'all' | 'active' | 'completed'
-const filter = ref('all')
+const filter = ref<'all' | 'active' | 'completed'>('all')
 
 // 全局唯一 ID 計數器（避免用陣列長度，因為刪除後長度會變）
 let nextId = 3
@@ -62,13 +62,13 @@ function addTodo() {
 }
 
 // 切換 todo 的完成狀態
-function toggleTodo(id) {
+function toggleTodo(id: number): void {
   const todo = todos.value.find((t) => t.id === id)
   if (todo) todo.completed = !todo.completed
 }
 
 // 刪除指定 id 的 todo
-function deleteTodo(id) {
+function deleteTodo(id: number): void {
   todos.value = todos.value.filter((t) => t.id !== id)
 }
 
@@ -98,11 +98,11 @@ function clearCompleted() {
     <!-- 篩選 Tab -->
     <nav class="filter-tabs">
       <button
-        v-for="tab in [
+        v-for="tab in ([
           { key: 'all', label: '全部' },
           { key: 'active', label: '未完成' },
           { key: 'completed', label: '已完成' },
-        ]"
+        ] as const)"
         :key="tab.key"
         class="filter-tab"
         :class="{ 'filter-tab-active': filter === tab.key }"

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — defineEmits 事件宣告與觸發（解答）
  *
  *  核心概念：
@@ -11,20 +11,20 @@ import { ref } from 'vue'
 
 const submitted    = ref(false)
 const lastFeedback = ref('')
-const emitLog      = ref([])
+const emitLog      = ref<string[]>([])   // 明確標注為字串陣列，避免空陣列推斷為 never[]
 
 // ── 宣告此元件會發出的事件 ─────────────────────────────────
-// 寫法一（簡單陣列）：
-const emit = defineEmits(['feedback', 'reset'])
+// 帶型別寫法（TypeScript 友好，能正確推斷 emit 參數型別）：
+const emit = defineEmits<{
+  feedback: [type: string]   // feedback 事件：攜帶字串 payload
+  reset: []                  // reset 事件：無 payload
+}>()
 
-// 寫法二（帶型別，TypeScript 友好）：
-// const emit = defineEmits<{
-//   feedback: [type: 'positive' | 'negative']
-//   reset: []
-// }>()
+// 簡單陣列寫法（無型別檢查）：
+// const emit = defineEmits(['feedback', 'reset'])
 
 // ── sendFeedback：更新本地狀態並 emit 事件 ───────────────────
-function sendFeedback(type) {
+function sendFeedback(type: string): void {  // type 必須為字串，對應 emit 的 payload 型別
   lastFeedback.value = type     // 記錄使用者選擇
   submitted.value    = true     // 切換到「已送出」畫面
 

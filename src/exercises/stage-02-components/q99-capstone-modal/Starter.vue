@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：可配置 Modal 系統（功能實作）
  *
  *  目標：從零實作一個 AppModal 元件，並在此父層中使用它。

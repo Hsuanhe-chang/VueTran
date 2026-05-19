@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — defineStore 基礎（Options 寫法）（填空）
  *
  *  Pinia Options Store 三個核心區塊：
@@ -14,12 +14,12 @@ const useCounterStore = defineStore('counter-q01', {
   // TODO 1：定義 state — 回傳含 count（初始 0）與 history（空陣列）的物件
   state: () => ({
     count:   /* TODO: 初始值 0   */ null,
-    history: /* TODO: 空陣列 [] */ null,
+    history: /* TODO: 空陣列 [] */ null as string[] | null, // 型別斷言：讓 TS 知道這是 string[] | null，而非 null
   }),
 
   // TODO 2：定義 getters — doubleCount 回傳 count × 2
   getters: {
-    doubleCount: /* TODO: state => state.count * 2 */ null,
+    doubleCount: /* TODO: state => state.count * 2 */ null as any, // as any：避免 null 不符合 getter 函式型別導致 defineStore overload 錯誤
   },
 
   // TODO 3：定義 actions
@@ -65,9 +65,10 @@ const store = useCounterStore()
     <!-- ── 歷史記錄 ── -->
     <section class="demo-section">
       <h4>操作歷史</h4>
-      <div v-if="store.history.length" class="history-list">
+      <!-- store.history 可能為 null（TODO 填寫前），用 ?. 避免 TS18047 -->
+      <div v-if="store.history?.length" class="history-list">
         <div
-          v-for="(entry, i) in store.history"
+          v-for="(entry, i) in (store.history ?? [])"  
           :key="i"
           class="history-item"
         >

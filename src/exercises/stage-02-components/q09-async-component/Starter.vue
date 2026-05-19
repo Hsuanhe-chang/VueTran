@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q09 — defineAsyncComponent 非同步載入（從零撰寫）
  *  _HeavyDashboard.vue 模擬載入耗時的元件。
  *  你需要用 defineAsyncComponent 非同步載入它，

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Provide / Inject 依賴注入（填空 + 找錯誤）
  *  你是父層元件，負責提供主題資料給所有子元件使用。
  *  子元件（_ThemedCard.vue）透過 inject 取得資料——無需一層層 props 傳遞。

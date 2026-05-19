@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — KeepAlive 快取元件狀態（解答）
  *
  *  修正的 2 個 Bug：
@@ -17,7 +17,7 @@ const CounterTab = defineComponent({
   name: 'CounterTab',
   setup() {
     const count       = ref(0)
-    const activateLog = ref([])
+    const activateLog = ref<string[]>([])  // 明確標注字串陣列，避免推斷為 never[]
 
     // onActivated：從快取恢復時呼叫（每次 Tab 顯示都觸發）
     onActivated(() => {

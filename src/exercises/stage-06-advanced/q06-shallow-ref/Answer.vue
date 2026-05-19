@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — shallowRef / shallowReactive 效能優化（解答）
  *
  *  Bug A 修正：shallowRef(0) → ref(0)（基本型別用 ref，語義更清晰）
@@ -45,7 +45,7 @@ function increaseFontSize() {
 // Demo C — 大型商品列表（整個替換策略）
 // ═══════════════════════════════════════════════════════
 
-function generateProducts(page) {
+function generateProducts(page: number) {
   return Array.from({ length: 20 }, (_, i) => ({
     id: page * 100 + i,
     name: `商品 ${page}-${String(i + 1).padStart(3, '0')}`,

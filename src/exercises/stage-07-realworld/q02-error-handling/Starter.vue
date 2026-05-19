@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — 全域錯誤處理（app.config.errorHandler）（練習）
  *
  *  Vue 提供兩層錯誤捕捉機制：
@@ -14,13 +14,21 @@ import { ref, defineComponent } from 'vue'
 // TODO 1：補上 onErrorCaptured import
 // import { ref, defineComponent, onErrorCaptured } from 'vue'
 
+// ── 錯誤日誌的資料結構定義 ──────────────────────────────────
+// 每筆日誌包含：message（錯誤訊息）、info（Vue 位置說明）、time（發生時間）
+interface ErrorLog {
+  message: string
+  info: string
+  time: string
+}
+
 // ── 模擬一個會拋出錯誤的子元件 ──────────────────────────
 // BuggyWidget：點擊按鈕時拋出不同類型的錯誤
 const BuggyWidget = defineComponent({
   name: 'BuggyWidget',
   setup() {
     const errorTypes = [
-      { label: '型別錯誤',   fn: () => { null.toString() } },
+      { label: '型別錯誤',   fn: () => { (null as any).toString() } },
       { label: '自訂錯誤',   fn: () => { throw new Error('業務邏輯：資料格式不正確') } },
       { label: '非同步錯誤', fn: async () => { throw new Error('API 呼叫失敗：503 Service Unavailable') } },
     ]
@@ -54,8 +62,8 @@ const BuggyWidget = defineComponent({
 //   return false  // 阻止錯誤繼續向上傳播
 // })
 
-// 暫時空陣列（完成 TODO 後替換為 ref([])）
-const errorLog = ref([])
+// 暫時空陣列（完成 TODO 後替換）── 加上 ErrorLog[] 泛型，避免 null value TS 錯誤
+const errorLog = ref<ErrorLog[]>([])
 
 // TODO 3：清除日誌
 function clearLog() {

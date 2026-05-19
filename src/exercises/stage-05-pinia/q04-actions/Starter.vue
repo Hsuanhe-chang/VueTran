@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — Actions 與非同步操作（功能實作）
  *
  *  Pinia Actions：
@@ -26,9 +26,9 @@ let nextId = 4 // 用於自動遞增新使用者的 id
 // ── TODO：實作 useUserListStore ──────────────────────────────────
 const useUserListStore = defineStore('user-list-q04', {
   state: () => ({
-    users:     [],    // 使用者陣列
+    users:     [] as { id: number; name: string; role: string }[], // 明確型別：避免推断為 never[]
     isLoading: false, // 載入中狀態
-    error:     null,  // 錯誤訊息（null 表示無錯誤）
+    error:     null as string | null,  // 錯誤訊息（null 表示無錯誤）
   }),
 
   actions: {
@@ -43,19 +43,19 @@ const useUserListStore = defineStore('user-list-q04', {
 
     // ── TODO 2：addUser（同步）─────────────────────────────────────
     // 新增 { id: nextId++, name, role: 'user' } 到 this.users
-    addUser(name) {
+    addUser(name: string) {
       /* TODO */
     },
 
-    // ── TODO 3：removeUser（同步）──────────────────────────────────
+    // ── TODO 3：removeUser（同步）─────────────────────────────────────────
     // 從 this.users 移除 id 符合的使用者
-    removeUser(id) {
+    removeUser(id: number) {
       /* TODO */
     },
 
-    // ── TODO 4：toggleRole（同步）──────────────────────────────────
+    // ── TODO 4：toggleRole（同步）─────────────────────────────────────────
     // 找到 id 符合的使用者，將 role 在 'user' / 'admin' 之間切換
-    toggleRole(id) {
+    toggleRole(id: number) {
       /* TODO */
     },
   },

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q07 — Vitest 單元測試基礎（解答）
  *
  *  TODO 解答：
@@ -8,13 +8,28 @@
  */
 import { ref, computed } from 'vue'
 
+// ── 測試結果的資料結構定義 ──────────────────────────────────
+/** 單個測試案例的執行結果 */
+interface TestResult {
+  name: string
+  actual: unknown
+  expected: unknown
+  pass: boolean
+}
+/** 測試套件的執行結果 */
+interface SuiteResult {
+  describe: string
+  tests: TestResult[]
+}
+
 // ── 受測函式（已修正版本）─────────────────────────────────
 
 /**
  * 金額格式化
  * ✅ 修正 Bug 1：加入 typeof 型別檢查，非數字直接回傳 'Invalid'
+ * price: unknown 讓呼叫端能傳入任意型別（測試要傳入 'abc'）
  */
-function formatPrice(price, currency = 'USD') {
+function formatPrice(price: unknown, currency = 'USD'): string {
   // 修正：先確認 price 是數字型別，再進行格式化
   if (typeof price !== 'number') return 'Invalid'
   return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(price)
@@ -24,7 +39,7 @@ function formatPrice(price, currency = 'USD') {
  * Email 格式驗證
  * ✅ 修正 Bug 2：將 @ 前的 * 量詞改為 +，確保 @ 前必須有至少一個字元
  */
-function validateEmail(email) {
+function validateEmail(email: string): boolean {
   // 修正：[^\s@]* → [^\s@]+（+ 要求「一個或多個」，排除 '@example.com' 這類格式）
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
@@ -33,7 +48,7 @@ function validateEmail(email) {
  * 將數值限制在 [min, max] 範圍內
  * ✅ 修正 Bug 3：Math.min 包外層（限制上界），Math.max 包內層（確保下界）
  */
-function clamp(value, min, max) {
+function clamp(value: number, min: number, max: number): number {
   // 修正：正確順序 — 先 Math.max(value, min) 確保不低於 min，
   //       再用 Math.min(..., max) 確保不超過 max
   return Math.min(Math.max(value, min), max)
@@ -41,7 +56,9 @@ function clamp(value, min, max) {
 
 // ── 模擬測試套件（與 Starter.vue 相同）─────────────────
 
-function deepEqual(a, b) {
+/** 深層相等比較（模擬 expect().toEqual()）*/
+// a, b: unknown 接受任意型別，避免隐式 any 參數錯誤
+function deepEqual(a: unknown, b: unknown): boolean {
   return JSON.stringify(a) === JSON.stringify(b)
 }
 
@@ -76,7 +93,8 @@ const testSuites = [
   },
 ]
 
-const results = ref([])
+// 加上 SuiteResult[] 泛型，避免 ref([]) 的隱式 any 型別錯誤
+const results = ref<SuiteResult[]>([])
 const hasRun = ref(false)
 
 function runTests() {
@@ -87,8 +105,9 @@ function runTests() {
       try {
         actual = t.fn()
         pass = deepEqual(actual, t.expected)
-      } catch (e) {
-        actual = `Error: ${e.message}`
+      } catch (e: unknown) {
+        // e: unknown 是 TypeScript 嚴格模式的預設，用 instanceof 確認後才取 message
+        actual = `Error: ${e instanceof Error ? e.message : String(e)}`
         pass = false
       }
       return { name: t.name, actual, expected: t.expected, pass }

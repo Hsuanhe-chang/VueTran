@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — 自訂指令（Custom Directives）（解答）
  *
  *  核心概念：
@@ -7,13 +7,13 @@
  *  3. updated：元件重新渲染後觸發（binding.value 可能已改變）
  *  4. binding.value：是 v-highlight="xxx" 中 xxx 的當前值
  */
-import { ref } from 'vue'
+import { ref, type DirectiveBinding } from 'vue'
 
-// ── vFocus：自動聚焦指令 ──────────────────────────────────────
+// ── vFocus：自動聽焦指令 ─────────────────────────────────
 // 使用：<input v-focus />
 const vFocus = {
   // mounted hook：元素被加入 DOM 後自動執行一次
-  mounted(el) {
+  mounted(el: HTMLElement) {
     // el 是套用指令的真實 DOM 元素（InputElement）
     el.focus()  // 讓輸入框自動獲得焦點，出現文字游標
   }
@@ -23,14 +23,14 @@ const vFocus = {
 // 使用：<div v-highlight="'#fef9c3'"> 或 <div v-highlight="colorRef">
 const vHighlight = {
   // mounted：元素初次掛載時設定背景色
-  mounted(el, binding) {
+  mounted(el: HTMLElement, binding: DirectiveBinding) {
     // binding.value = 傳入指令的值（顏色字串）
     el.style.backgroundColor = binding.value
   },
 
   // updated：元件重新渲染後執行（例如 highlightColor.value 被改變）
   // 若只有 mounted 而沒有 updated，動態顏色切換不會更新背景色
-  updated(el, binding) {
+  updated(el: HTMLElement, binding: DirectiveBinding) {
     el.style.backgroundColor = binding.value
   }
 }

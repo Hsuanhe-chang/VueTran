@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q02 — 參考答案：reactive 與巢狀物件響應性
  *

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Class 與 Style 動態綁定（從零撰寫） */
 
 // TODO: import ref

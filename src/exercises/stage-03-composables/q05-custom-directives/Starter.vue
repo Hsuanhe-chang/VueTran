@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — 自訂指令（Custom Directives）（從零撰寫）
  *
  *  重點：在 <script setup> 中，名稱以 v 開頭的變數會被自動視為自訂指令，

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — Transition 進入/離開動畫（從零撰寫 CSS）
  *
  *  <Transition name="fade"> 會為子元素加入 6 個 CSS 類別：

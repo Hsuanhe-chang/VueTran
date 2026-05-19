@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：小型後台管理系統（解答）
  *
  *  TODO 解答：
@@ -12,6 +12,23 @@ import {
   defineComponent, defineAsyncComponent
 } from 'vue'
 
+// ── 型別定義 ───────────────────────────────────────────────────
+/** 元件錯誤日誌的資料結構 */
+interface ErrorLog {
+  message: string
+  info: string
+  time: string
+}
+
+/** 使用者資料結構 */
+interface User {
+  id: number
+  name: string
+  email: string
+  role: string
+  status: string
+}
+
 // ── Mock API（與 Starter.vue 相同）───────────────────────
 const API_BASE = import.meta.env.VITE_API_URL ?? 'mock'
 
@@ -22,14 +39,17 @@ const _mockUsers = ref([
   { id: 4, name: 'David Huang', email: 'david@example.com',  role: 'editor', status: 'active'   },
 ])
 
-function mockApiCall(endpoint, body = null) {
+// 加上 endpoint: string 避免隐式 any，body 加上聯合型別避免 spread null 額錯誤
+function mockApiCall(endpoint: string, body: Record<string, unknown> | null = null) {
   console.log(`[${API_BASE}] ${body ? 'POST' : 'GET'} ${endpoint}`)
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (endpoint === '/users') {
         resolve([..._mockUsers.value])
       } else if (endpoint === '/users/add' && body) {
-        const newUser = { id: Date.now(), ...body, status: 'active' }
+        // body 在 && body 檢查後被 TypeScript 縮小為 Record，可安全 spread
+        // 用 as User 型別斷言，因為 spread Record<string,unknown> 無法自動推斷必要欄位
+        const newUser = { id: Date.now(), ...body, status: 'active' } as User
         _mockUsers.value.push(newUser)
         resolve(newUser)
       } else if (endpoint === '/stats') {
@@ -54,10 +74,12 @@ function mockApiCall(endpoint, body = null) {
  * @param {string | import('vue').Ref<string>} endpoint
  * @returns {{ data: Ref, isLoading: Ref<boolean>, error: Ref<string|null>, execute: Function }}
  */
-function useFetch(endpoint) {
-  const data = ref(null)
+function useFetch(endpoint: string) {
+  // data: any 避免 Ref<null> 導致的 spread 與資料讀取型別衝突
+  const data = ref<any>(null)
   const isLoading = ref(false)
-  const error = ref(null)
+  // error 需要接受 string，加上聯合型別避免 Ref<null> 資料設定失敗
+  const error = ref<string | null>(null)
 
   async function execute() {
     // 1. 開始載入：設定 loading 旗標，清除前次錯誤
@@ -66,9 +88,9 @@ function useFetch(endpoint) {
     try {
       // 2. toValue() 解包 ref，讓 endpoint 可以是響應式的
       data.value = await mockApiCall(toValue(endpoint))
-    } catch (e) {
-      // 3. 失敗時記錄錯誤訊息（不顯示技術細節給使用者）
-      error.value = e.message
+    } catch (e: unknown) {
+      // 3. e: unknown 是 TS 嚴格模式預設，用 instanceof 安全取得錯誤訊息
+      error.value = e instanceof Error ? e.message : String(e)
     } finally {
       // 4. 無論成功或失敗，都關閉載入狀態
       isLoading.value = false
@@ -84,7 +106,8 @@ const users = useFetch('/users')
 // ── ✅ TODO 2 解答：onErrorCaptured 錯誤邊界 ─────────────
 // 攔截所有子元件（包含孫層）的錯誤，防止整頁崩潰
 
-const componentErrors = ref([])
+// 加上 ErrorLog[] 泛型，避免 ref([]) 導致的 Ref<never[]> 型別錯誤
+const componentErrors = ref<ErrorLog[]>([])
 
 // onErrorCaptured 的三個參數：err（錯誤物件）、instance（出錯的元件實例）、info（錯誤位置說明）
 onErrorCaptured((err, _instance, info) => {
@@ -117,10 +140,12 @@ const triggerError = ref(false)
 const form = reactive({ name: '', email: '', role: '' })
 const touched = reactive({ name: false, email: false, role: false })
 
-function touch(field) { touched[field] = true }
+// keyof typeof touched 限定 field 必須是 touched 的已知鍵名，避免索引型別錯誤
+function touch(field: keyof typeof touched): void { touched[field] = true }
 
 const errors = computed(() => {
-  const e = {}
+  // Record<string, string> 明確宣告 e 可接受任意字串 key，避免 TypeScript 索引錯誤
+  const e: Record<string, string> = {}
 
   // name：必填，且至少需要 2 個字
   if (touched.name) {
@@ -155,7 +180,8 @@ const submitSuccess = ref(false)
 
 async function handleSubmit() {
   // 強制所有欄位標記為已觸碰，讓所有錯誤訊息顯示
-  Object.keys(touched).forEach(k => (touched[k] = true))
+  // keyof typeof touched 限定 k 索引型別，避免字串索引安全性錯誤
+  Object.keys(touched).forEach(k => (touched[k as keyof typeof touched] = true))
   if (hasErrors.value) return
 
   isSubmitting.value = true
@@ -169,8 +195,9 @@ async function handleSubmit() {
     Object.assign(touched, { name: false, email: false, role: false })
     submitSuccess.value = true
     setTimeout(() => (submitSuccess.value = false), 3000)
-  } catch (e) {
-    componentErrors.value.push({ message: e.message, info: 'handleSubmit', time: new Date().toLocaleTimeString() })
+  } catch (e: unknown) {
+    // e: unknown 用 instanceof 確保安全取得 message
+    componentErrors.value.push({ message: e instanceof Error ? e.message : String(e), info: 'handleSubmit', time: new Date().toLocaleTimeString() })
   } finally {
     isSubmitting.value = false
   }
@@ -236,7 +263,9 @@ const StatsPanel = defineAsyncComponent({
 const statsKey = ref(0)
 function refreshStats() { statsKey.value++ }
 
-function getRoleClass(role) {
+// 根據角色回傳對應的 CSS badge class
+// role: string 避免元素隱式任意索引型別錯誤
+function getRoleClass(role: string): string {
   return { admin: 'badge-admin', editor: 'badge-editor', viewer: 'badge-viewer' }[role] ?? ''
 }
 </script>

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — Setup Store（Composition API 寫法）（重構練習）
  *
  *  Options Store vs Setup Store 對應關係：

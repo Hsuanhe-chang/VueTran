@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 可配置 Modal 系統（解答）
  *
  *  整合技術：

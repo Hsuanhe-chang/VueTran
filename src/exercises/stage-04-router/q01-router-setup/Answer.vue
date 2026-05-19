@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — createRouter / createWebHistory 基礎設定（解答）
  *
  *  核心概念：

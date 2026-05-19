@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：購物車（多 Store 協作）（解答）
  *
  *  整合：
@@ -8,6 +8,32 @@
  */
 import { ref }                       from 'vue'
 import { defineStore, storeToRefs }  from 'pinia'
+
+// ── 型別定義 ────────────────────────────────────────────────────
+/** 商品資料型別 */
+interface Product {
+  id: string
+  name: string
+  category: string
+  price: number
+}
+/** 購物車品項型別 */
+interface CartItem {
+  productId: string
+  name: string
+  price: number
+  qty: number
+}
+/** 訂單型別 */
+interface Order {
+  id: number
+  name: string
+  address: string
+  note: string
+  items: CartItem[]
+  total: number
+  time: string
+}
 
 // ════════════════════════════════════════════════════════════════
 // ① useProductStore
@@ -33,7 +59,7 @@ const useProductStore = defineStore('products-q99-ans', {
   },
 
   actions: {
-    setCategory(cat) { this.selectedCategory = cat },
+    setCategory(cat: string) { this.selectedCategory = cat }, // 參數加型別避免隱式 any
   },
 })
 
@@ -42,8 +68,8 @@ const useProductStore = defineStore('products-q99-ans', {
 // ════════════════════════════════════════════════════════════════
 const useCartStore = defineStore('cart-q99-ans', {
   state: () => ({
-    // items: [{ productId, name, price, qty }]
-    items: [],
+    // 明確型別：避免推断為 never[] 導致 item 屬性存取失敗
+    items: [] as CartItem[],
   }),
 
   getters: {
@@ -56,7 +82,7 @@ const useCartStore = defineStore('cart-q99-ans', {
 
   actions: {
     // 加入商品：已存在則 qty+1，否則新增
-    addItem(product) {
+    addItem(product: Product) {
       const existing = this.items.find(i => i.productId === product.id)
       if (existing) {
         existing.qty++
@@ -71,12 +97,12 @@ const useCartStore = defineStore('cart-q99-ans', {
     },
 
     // 移除商品（直接移除，不管數量）
-    removeItem(productId) {
+    removeItem(productId: string) {
       this.items = this.items.filter(i => i.productId !== productId)
     },
 
     // 數量增減：qty 降到 0 以下時自動移除
-    updateQty(productId, delta) {
+    updateQty(productId: string, delta: number) {
       const item = this.items.find(i => i.productId === productId)
       if (!item) return
       item.qty += delta
@@ -100,14 +126,14 @@ const useCheckoutStore = defineStore('checkout-q99-ans', {
       address: '',
       note:    '',
     },
-    errors: {},
-    orders: [],
+    errors: {} as Record<string, string>, // 明確型別：允許動態鍵存取錯誤訊息
+    orders: [] as Order[],               // 明確型別：避免推断為 never[]
   }),
 
   actions: {
     placeOrder() {
       // ① 驗證必填欄位
-      const newErrors = {}
+      const newErrors: Record<string, string> = {} // 明確型別：允許動態新增字串屬性
       if (!this.form.name.trim())    newErrors.name    = '請輸入收件人姓名'
       if (!this.form.address.trim()) newErrors.address = '請輸入收件地址'
 

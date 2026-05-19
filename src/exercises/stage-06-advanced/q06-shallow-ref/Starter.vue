@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — shallowRef / shallowReactive 效能優化（找錯誤 + 重構）
  *
  *  深層 ref() 會遞迴追蹤所有巢狀屬性，對大型物件造成效能開銷。
@@ -60,7 +60,7 @@ function increaseFontSize() {
 // ═══════════════════════════════════════════════════════
 
 // 模擬從 API 取回的商品列表（實際可能有數百筆）
-function generateProducts(page) {
+function generateProducts(page: number) {
   return Array.from({ length: 20 }, (_, i) => ({
     id: page * 100 + i,
     name: `商品 ${page}-${String(i + 1).padStart(3, '0')}`,

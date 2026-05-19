@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — Suspense 與非同步元件（練習）
  *
  *  Suspense 讓你在非同步元件載入完成前顯示 fallback UI（骨架屏/Loading）。
@@ -121,10 +121,10 @@ function reload() {
       <h4>Suspense + onErrorCaptured 語法提示</h4>
       <pre v-pre class="code-block"><!-- 包住含 async setup() 的元件 -->
 <Suspense>
-  <template #default>
+  <template &#35;default>
     <AsyncCard />    <!-- async setup() 元件：await 期間顯示 fallback -->
   </template>
-  <template #fallback>
+  <template &#35;fallback>
     <div class="skeleton">載入中…</div>
   </template>
 </Suspense>

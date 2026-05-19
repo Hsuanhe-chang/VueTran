@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — defineModel（Component v-model）（解答）
  *
  *  核心概念：

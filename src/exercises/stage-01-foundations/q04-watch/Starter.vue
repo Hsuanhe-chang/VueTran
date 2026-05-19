@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q04 — watch 與 watchEffect
  * Part A（找錯誤）：找出 3 個 bug
@@ -13,6 +13,7 @@ const bugCount = ref(0)
 const bugUser = reactive({ name: 'Alice' })  // 🐛 哪裡有問題？
 
 // Bug 1
+// @ts-expect-error Bug 1 示範：不應傳入 .value
 watch(bugCount.value, (newVal) => {     // 🐛 監聽來源寫法有問題
   console.log('count changed:', newVal)
 })
@@ -37,13 +38,13 @@ const lengthWarning = ref(false)   // 長度 > 10 時為 true
 // TODO: 用 watch 監聽 searchQuery
 //       加入 300ms debounce（用 setTimeout / clearTimeout 實作）
 //       在 callback 中更新 searchStatus
-let debounceTimer = null
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
-watch(/* TODO */)
+watch(searchQuery, (_newVal: string) => { /* TODO: 加入 300ms debounce 邏輯，更新 searchStatus */ })
 
 // TODO: 用 watchEffect 監聽 searchQuery 長度
 //       當 searchQuery.value.length > 10 時，設 lengthWarning = true
-watchEffect(/* TODO */)
+watchEffect(() => { /* TODO: 監聽 searchQuery 長度，更新 lengthWarning */ })
 </script>
 
 <template>

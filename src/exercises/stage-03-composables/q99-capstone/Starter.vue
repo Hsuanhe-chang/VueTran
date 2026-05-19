@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q99 — 綜合題：useLocalStorage + useDebouncedRef（練習）
  *
  *  本題組合兩個進階 Composable：
@@ -32,7 +32,7 @@ import { ref, computed, watch, customRef } from 'vue'
 //   return storageRef
 // }
 
-function useLocalStorage(key, defaultValue) {
+function useLocalStorage<T>(key: string, defaultValue: T) {
   // 請實作這裡
   return ref(defaultValue)  // ← 替換這行
 }
@@ -58,7 +58,7 @@ function useLocalStorage(key, defaultValue) {
 //   }))
 // }
 
-function useDebouncedRef(value, delay = 500) {
+function useDebouncedRef<T>(value: T, delay = 500) {
   // 請實作這裡（使用 customRef）
   return ref(value)  // ← 替換這行（目前沒有防抖效果）
 }
@@ -115,7 +115,7 @@ const filteredNotes = computed(() => {
       <div class="search-row">
         <input
           :value="searchQuery"
-          @input="searchQuery = $event.target.value"
+          @input="searchQuery = ($event.target as HTMLInputElement).value"
           type="text"
           class="demo-input"
           placeholder="搜尋筆記…（停止輸入 300ms 後才過濾）"

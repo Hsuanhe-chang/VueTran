@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — 預設插槽與具名插槽（填空）
  *  你正在實作 SectionCard 版面元件。
  *  父層這樣使用它：

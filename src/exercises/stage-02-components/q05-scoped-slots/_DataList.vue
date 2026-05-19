@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** _DataList.vue — 已提供的資料列表元件（不需修改）
  *  透過 scoped slot 將每個 item 和 index 暴露給父層，
  *  讓父層自訂每一列的渲染方式。
@@ -10,12 +10,15 @@
  *      </template>
  *    </DataList>
  */
-defineProps({
-  items: {
-    type:     Array,
-    required: true,
-  },
-})
+// 定義通用資料項目的基底型別：必須包含 id 欄位，其他屬性任意
+interface DataItem {
+  id: string | number
+  [key: string]: unknown  // 允許任意額外屬性，保持元件的通用性
+}
+
+defineProps<{
+  items: DataItem[]  // 使用型別語法，讓 slot 的 item 獲得正確型別
+}>()
 </script>
 
 <template>

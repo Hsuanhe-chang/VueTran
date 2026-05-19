@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q03 — Computed Properties 計算屬性
  * 任務：讓購物車的總價、總數量、空狀態能自動計算
@@ -38,11 +38,11 @@ const isCartEmpty = computed(() => {
 })
 
 // ✅ 已完成的函式
-function increaseQty(index) {
+function increaseQty(index: number): void {
   products.value[index].qty++
 }
 
-function decreaseQty(index) {
+function decreaseQty(index: number): void {
   if (products.value[index].qty > 0) {
     products.value[index].qty--
   }

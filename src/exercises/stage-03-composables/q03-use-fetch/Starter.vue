@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — 非同步 Composable（useFetch pattern）（練習）
  *
  *  目標：實作 useFetch(url) composable，封裝完整的非同步資料獲取流程。
@@ -44,7 +44,7 @@ import { ref, watchEffect, toValue } from 'vue'
 //   return { data, error, isLoading }
 // }
 
-function useFetch(url) {
+function useFetch(url: string | (() => string) | { value: string }) {
   // 請在此實作
   const data      = ref(null)
   const error     = ref(null)

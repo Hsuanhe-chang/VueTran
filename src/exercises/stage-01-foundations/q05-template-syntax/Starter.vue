@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — Template 語法：插值與指令（填空題）
  *  現況：所有變數已準備好，你需要在 template 中填入正確的語法
  */

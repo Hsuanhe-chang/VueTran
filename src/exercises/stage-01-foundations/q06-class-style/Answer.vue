@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — 參考答案：Class 與 Style 動態綁定 */
 import { ref } from 'vue'
 

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — 環境變數管理（import.meta.env）（填空）
  *
  *  Vite 透過 import.meta.env 暴露環境變數：

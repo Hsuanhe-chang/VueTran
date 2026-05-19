@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Provide / Inject 依賴注入（解答）
  *
  *  核心概念：

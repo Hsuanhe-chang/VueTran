@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — 參考答案：Template 語法 */
 import { ref } from 'vue'
 

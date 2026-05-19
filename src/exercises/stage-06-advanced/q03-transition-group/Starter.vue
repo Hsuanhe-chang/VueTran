@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q03 — TransitionGroup 列表動畫（從零撰寫）
  *
  *  TransitionGroup 與 Transition 的差異：
@@ -26,7 +26,7 @@ function addItem() {
   items.value.unshift({ id: nextId++, text: label })
 }
 
-function removeItem(id) {
+function removeItem(id: number): void {
   items.value = items.value.filter(i => i.id !== id)
 }
 

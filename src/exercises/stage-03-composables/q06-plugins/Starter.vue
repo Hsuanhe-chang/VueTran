@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Plugin 開發與安裝（填空）
  *
  *  Plugin 是封裝全域功能的標準方式：
@@ -19,7 +19,7 @@
  *        這裡我們改用手動呼叫 install(mockApp) 來模擬插件安裝的過程，
  *        幫助你理解 install 函式的運作原理。
  */
-import { ref, inject, provide } from 'vue'
+import { ref, inject, provide, type App } from 'vue'
 
 // ── 翻譯對照表（模擬 i18n 資源） ─────────────────────────────
 const messages = {
@@ -36,11 +36,11 @@ const messages = {
 // ── i18nPlugin：國際化插件 ────────────────────────────────────
 const i18nPlugin = {
   // install 是插件的進入點；app.use(i18nPlugin, options) 時被呼叫
-  install(app, options) {
+  install(app: App, options?: { messages?: Record<string, string> }) {
     // TODO 1：定義翻譯函式
     //   - 從 options.messages[key] 查找翻譯字串
     //   - 若找不到，直接回傳 key 本身（防止畫面顯示 undefined）
-    function translate(key) {
+    function translate(key: string): string {
       // 請實作：return options.messages?.[key] ?? key
       return key  // ← 替換這行
     }
@@ -55,15 +55,15 @@ const i18nPlugin = {
 
 // ── 模擬安裝（本元件中無法用 app.use，故手動呼叫 install）────
 // 建立一個 mock app 物件，讓 provide 的值流到元件的 inject
-const provideMap = {}
+const provideMap: Record<string, unknown> = {}
 const mockApp = {
-  config: { globalProperties: {} },
+  config: { globalProperties: {} as Record<string, unknown> },
   // 將 app.provide 的值轉為元件內的 provide（讓 inject 可以取到）
-  provide(key, value) { provideMap[key] = value },
+  provide(key: string, value: unknown) { provideMap[key] = value },
 }
 
 // 執行插件安裝（傳入 messages 作為 options）
-i18nPlugin.install(mockApp, { messages })
+i18nPlugin.install(mockApp as unknown as App, { messages })
 
 // 將 provideMap 中的值 provide 到元件樹
 // （實際專案中 app.use() 會自動處理，這裡只是模擬）
@@ -73,7 +73,7 @@ for (const [key, value] of Object.entries(provideMap)) {
 
 // ── 元件使用翻譯函式 ─────────────────────────────────────────
 // 透過 inject 取得 translate 函式（與實際安裝插件後一致）
-const translate = inject('translate', (key) => key)  // 第二個參數為 fallback
+const translate = inject('translate', (key: string) => key)  // 第二個參數為 fallback
 
 // 示範用：切換顯示不同翻譯 key
 const demoKeys = Object.keys(messages)

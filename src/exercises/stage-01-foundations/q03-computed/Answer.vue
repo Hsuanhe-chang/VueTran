@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /**
  * Q03 — 參考答案：Computed Properties 計算屬性
  *
@@ -32,12 +32,12 @@ const totalItems = computed(() =>
 const isCartEmpty = computed(() => products.value.every((p) => p.qty === 0))
 
 // 增加指定商品的數量
-function increaseQty(index) {
+function increaseQty(index: number): void {
   products.value[index].qty++
 }
 
 // 減少指定商品的數量，最低為 0
-function decreaseQty(index) {
+function decreaseQty(index: number): void {
   if (products.value[index].qty > 0) {
     products.value[index].qty--
   }

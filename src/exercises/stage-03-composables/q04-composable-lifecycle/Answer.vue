@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — Composable 與 Lifecycle 整合（useEventListener / useWindowSize）（解答）
  *
  *  核心概念：
@@ -12,7 +12,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 // ── useEventListener：通用事件監聽器管理 ─────────────────────
 // 在 onMounted 時綁定，在 onUnmounted 時移除
 // 這樣不論哪個元件使用此 Composable，清除邏輯都不會遺漏
-function useEventListener(target, event, callback) {
+function useEventListener(target: EventTarget, event: string, callback: EventListener): void {
   // 元件掛載後，向 target 添加事件監聽
   onMounted(() => {
     target.addEventListener(event, callback)

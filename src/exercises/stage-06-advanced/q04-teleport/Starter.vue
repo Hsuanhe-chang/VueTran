@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q04 — Teleport 傳送門（填空）
  *
  *  Teleport 讓元件的 DOM 輸出到指定的 DOM 節點，

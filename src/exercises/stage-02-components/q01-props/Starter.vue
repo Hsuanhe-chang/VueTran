@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q01 — defineProps 定義與型別驗證（填空 + 找錯誤）
  *  你正在實作 ProductCard 子元件。
  *  父層會這樣使用它：

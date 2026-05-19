@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q05 — 環境變數管理（import.meta.env）（解答）
  *
  *  TODO 解答：

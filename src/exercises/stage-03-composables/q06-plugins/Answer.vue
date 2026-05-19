@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q06 — Plugin 開發與安裝（解答）
  *
  *  核心概念：
@@ -16,10 +16,10 @@
  *  app.use(i18nPlugin, { messages: { 'hello': '你好' } })
  *  app.mount('#app')
  */
-import { ref, inject, provide } from 'vue'
+import { ref, inject, provide, type App } from 'vue'
 
-// ── 翻譯對照表 ────────────────────────────────────────────────
-const messages = {
+// ── 翻譯對照表 ────────────────────────────────────────────
+const messages: Record<string, string> = {
   'app.title':       '我的 Vue 應用',
   'nav.home':        '首頁',
   'nav.about':       '關於我們',
@@ -32,11 +32,12 @@ const messages = {
 
 // ── i18nPlugin：完整實作 ──────────────────────────────────────
 const i18nPlugin = {
-  install(app, options) {
+  // install 是插件的進入點；app.use(i18nPlugin, options) 時被呼叫
+  install(app: App, options?: { messages?: Record<string, string> }) {
     // 翻譯函式：從 options.messages 查找 key 對應的字串
     // 若 key 不存在，回傳 key 本身（避免畫面出現 undefined / 空白）
-    function translate(key) {
-      return options.messages?.[key] ?? key
+    function translate(key: string): string {
+      return options?.messages?.[key] ?? key
     }
 
     // 讓整棵元件樹都能用 inject('translate') 取得翻譯函式
@@ -49,12 +50,12 @@ const i18nPlugin = {
 }
 
 // ── 模擬安裝（單一元件無法呼叫 app.use，以下模擬 main.js 的行為）
-const provideMap = {}
+const provideMap: Record<string, unknown> = {}
 const mockApp = {
-  config: { globalProperties: {} },
-  provide(key, value) { provideMap[key] = value },
+  config: { globalProperties: {} as Record<string, unknown> },
+  provide(key: string, value: unknown) { provideMap[key] = value },
 }
-i18nPlugin.install(mockApp, { messages })
+i18nPlugin.install(mockApp as unknown as App, { messages })
 
 // 將 install 中 app.provide 的值橋接到元件 provide
 for (const [key, value] of Object.entries(provideMap)) {
@@ -62,7 +63,8 @@ for (const [key, value] of Object.entries(provideMap)) {
 }
 
 // ── 元件取得翻譯函式 ──────────────────────────────────────────
-const translate = inject('translate', (key) => key)
+// key 參數明確為 string，避免 TS7006 隱含 any 錯誤
+const translate = inject('translate', (key: string) => key)
 
 const demoKeys  = Object.keys(messages)
 const selectedKey = ref('app.title')

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup lang="ts">
 /** Q02 — Setup Store（Composition API 寫法）（解答）
  *
  *  Setup Store 核心規則：
